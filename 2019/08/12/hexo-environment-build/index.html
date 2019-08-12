@@ -120,7 +120,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="本文记录基于Hexo框架 + GitHub + Linux服务器部署个人博客的过程。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-12T06:38:36.546Z">
+<meta property="og:updated_time" content="2019-08-12T06:51:32.876Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="个人博客搭建：Hexo + GitHub">
 <meta name="twitter:description" content="本文记录基于Hexo框架 + GitHub + Linux服务器部署个人博客的过程。">
@@ -389,7 +389,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  787
+                  1k
                 </span>
               
 
@@ -405,7 +405,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3
+                  4
                 </span>
               
             </div>
@@ -474,10 +474,38 @@ $ git clone https://github.com/iissnan/hexo-theme-next themes/next</code></pre><
     repo: &lt;repository url&gt;
     branch: [branch]
     message: [message]</code></pre><h2 id="4-3-部署代码到GitHub上"><a href="#4-3-部署代码到GitHub上" class="headerlink" title="4.3 部署代码到GitHub上"></a>4.3 部署代码到GitHub上</h2><p>Hexo部署代码时，会将git仓库的代码删除，所以要确保本地代码是最新的。</p>
-<pre><code>$ hexo c &amp;&amp; hexo g &amp;&amp; hexo s</code></pre><h1 id="5-创建和发布文章"><a href="#5-创建和发布文章" class="headerlink" title="5 创建和发布文章"></a>5 创建和发布文章</h1><h2 id="5-1-创建文章"><a href="#5-1-创建文章" class="headerlink" title="5.1 创建文章"></a>5.1 创建文章</h2><p>执行如下命令，会生成一个hello.md的文件，在这个文件内可以写入你的文章。</p>
+<pre><code>$ hexo c &amp;&amp; hexo g &amp;&amp; hexo s</code></pre><h1 id="5-基本用法"><a href="#5-基本用法" class="headerlink" title="5 基本用法"></a>5 基本用法</h1><h2 id="5-1-创建文章"><a href="#5-1-创建文章" class="headerlink" title="5.1 创建文章"></a>5.1 创建文章</h2><p>执行如下命令，会生成一个hello.md的文件，在这个文件内可以写入你的文章。</p>
 <pre><code>$ cd ~/test/hexo
 $ hexo new hello</code></pre><h2 id="5-2-发布文章"><a href="#5-2-发布文章" class="headerlink" title="5.2 发布文章"></a>5.2 发布文章</h2><p>重新生成静态文件，即可发布已经编辑好的文章。</p>
-<pre><code>$ hexo c &amp;&amp; hexo g &amp;&amp; hexo s</code></pre>
+<pre><code>$ hexo c &amp;&amp; hexo g &amp;&amp; hexo s</code></pre><h2 id="5-3-创建标签"><a href="#5-3-创建标签" class="headerlink" title="5.3 创建标签"></a>5.3 创建标签</h2><p>打开命令行，进入博客所在文件夹。执行命令</p>
+<pre><code>$ cd ~/test/hexo
+$ hexo new page tags</code></pre><p>成功后提示：</p>
+<pre><code>INFO  Created: ~/test/hexo/source/tags/index.md</code></pre><p>在~/test/hexo/source/tags/index.md文件添加 type: “tags” :</p>
+<pre><code>---
+title: 标签
+date: 2019-08-08 16:24:46
+type: &quot;tags&quot;
+---</code></pre><p>打开需要添加标签的文章，为其添加tags属性。</p>
+<pre><code>tags:
+- 环境搭建</code></pre><h2 id="5-4-创建分类"><a href="#5-4-创建分类" class="headerlink" title="5.4 创建分类"></a>5.4 创建分类</h2><p>打开命令行，进入博客所在文件夹。执行命令</p>
+<pre><code>$ cd ~/test/hexo
+$ hexo new page categories</code></pre><p>成功后提示：</p>
+<pre><code>INFO  Created: ~/test/hexo/source/categories/index.md</code></pre><p>在~/test/hexo/source/categories/index.md文件添加 type: “tags” :</p>
+<pre><code>---
+title: 分类
+date: 2019-08-08 16:24:46
+type: &quot;categories&quot;
+---</code></pre><p>打开需要添加标签的文章，为其添加tags属性。</p>
+<pre><code>---
+title: 个人博客搭建：Hexo + GitHub
+date: 2019-08-12 12:34:14
+tags:
+    - 环境搭建
+    - 个人博客
+categories: 
+    - &quot;环境搭建&quot;
+description: 本文记录基于Hexo框架 + GitHub + Linux服务器部署个人博客的过程。
+---</code></pre>
       
     </div>
     
@@ -662,7 +690,7 @@ $ hexo new hello</code></pre><h2 id="5-2-发布文章"><a href="#5-2-发布文�
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-前言"><span class="nav-number">1.</span> <span class="nav-text">1 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-搭建环境"><span class="nav-number">2.</span> <span class="nav-text">2 搭建环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-安装Git并配置SSH密钥"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 安装Git并配置SSH密钥</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-安装Git"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1 安装Git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-第一次使用创建新的SSH密钥"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2 第一次使用创建新的SSH密钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-配置SSH-keys到GitHub上"><span class="nav-number">2.1.3.</span> <span class="nav-text">2.1.3 配置SSH keys到GitHub上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-4-验证SSH是否配置成功"><span class="nav-number">2.1.4.</span> <span class="nav-text">2.1.4 验证SSH是否配置成功</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-安装Node-js"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 安装Node.js</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-安装nvm"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1 安装nvm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-安装Node-js"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2 安装Node.js</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-安装Hexo"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 安装Hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-安装hexo"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1 安装hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-初始化Hexo"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2 初始化Hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-生成静态文件"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.3.3 生成静态文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-4-启动服务预览"><span class="nav-number">2.3.4.</span> <span class="nav-text">2.3.4 启动服务预览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-5-hexo常用命令"><span class="nav-number">2.3.5.</span> <span class="nav-text">2.3.5 hexo常用命令</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-更换自己喜欢的主题"><span class="nav-number">3.</span> <span class="nav-text">3 更换自己喜欢的主题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-下载主题"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 下载主题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-启用主题"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 启用主题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-部署到GitHub上"><span class="nav-number">4.</span> <span class="nav-text">4 部署到GitHub上</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-安装hexo-deployer-git"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 安装hexo-deployer-git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-修改-config-yml配置"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 修改_config.yml配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-部署代码到GitHub上"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 部署代码到GitHub上</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-创建和发布文章"><span class="nav-number">5.</span> <span class="nav-text">5 创建和发布文章</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-创建文章"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 创建文章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-发布文章"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 发布文章</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-前言"><span class="nav-number">1.</span> <span class="nav-text">1 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-搭建环境"><span class="nav-number">2.</span> <span class="nav-text">2 搭建环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-安装Git并配置SSH密钥"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 安装Git并配置SSH密钥</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-安装Git"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1 安装Git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-第一次使用创建新的SSH密钥"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2 第一次使用创建新的SSH密钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-配置SSH-keys到GitHub上"><span class="nav-number">2.1.3.</span> <span class="nav-text">2.1.3 配置SSH keys到GitHub上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-4-验证SSH是否配置成功"><span class="nav-number">2.1.4.</span> <span class="nav-text">2.1.4 验证SSH是否配置成功</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-安装Node-js"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 安装Node.js</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-安装nvm"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1 安装nvm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-安装Node-js"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2 安装Node.js</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-安装Hexo"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 安装Hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-安装hexo"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1 安装hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-初始化Hexo"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2 初始化Hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-生成静态文件"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.3.3 生成静态文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-4-启动服务预览"><span class="nav-number">2.3.4.</span> <span class="nav-text">2.3.4 启动服务预览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-5-hexo常用命令"><span class="nav-number">2.3.5.</span> <span class="nav-text">2.3.5 hexo常用命令</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-更换自己喜欢的主题"><span class="nav-number">3.</span> <span class="nav-text">3 更换自己喜欢的主题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-下载主题"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 下载主题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-启用主题"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 启用主题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-部署到GitHub上"><span class="nav-number">4.</span> <span class="nav-text">4 部署到GitHub上</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-安装hexo-deployer-git"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 安装hexo-deployer-git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-修改-config-yml配置"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 修改_config.yml配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-部署代码到GitHub上"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 部署代码到GitHub上</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-基本用法"><span class="nav-number">5.</span> <span class="nav-text">5 基本用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-创建文章"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 创建文章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-发布文章"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 发布文章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-创建标签"><span class="nav-number">5.3.</span> <span class="nav-text">5.3 创建标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-4-创建分类"><span class="nav-number">5.4.</span> <span class="nav-text">5.4 创建分类</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -696,7 +724,7 @@ $ hexo new hello</code></pre><h2 id="5-2-发布文章"><a href="#5-2-发布文�
     
       <span class="post-meta-item-text">全文字数统计&#58;</span>
     
-    <span title="全文字数统计">2.4k</span>
+    <span title="全文字数统计">2.7k</span>
   
 
   
