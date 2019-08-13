@@ -120,7 +120,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="本文记录基于mac下的Kafka环境的搭建。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-12T10:14:43.337Z">
+<meta property="og:updated_time" content="2019-08-13T09:03:39.959Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kafka环境搭建">
 <meta name="twitter:description" content="本文记录基于mac下的Kafka环境的搭建。">
@@ -389,7 +389,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  364
+                  632
                 </span>
               
 
@@ -405,7 +405,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  2
                 </span>
               
             </div>
@@ -466,8 +466,27 @@ zkServer.sh start
 ## 停止
 zkServer.sh stop
 ## 状态
-zkServer.sh status</code></pre><h2 id="2-3-Kafka环境"><a href="#2-3-Kafka环境" class="headerlink" title="2.3 Kafka环境"></a>2.3 Kafka环境</h2><p>未完，待续..</p>
-
+zkServer.sh status</code></pre><h2 id="2-3-Kafka环境"><a href="#2-3-Kafka环境" class="headerlink" title="2.3 Kafka环境"></a>2.3 Kafka环境</h2><h3 id="2-3-1-下载并解压"><a href="#2-3-1-下载并解压" class="headerlink" title="2.3.1 下载并解压"></a>2.3.1 下载并解压</h3><p>从<a href="https://www.apache.org/dyn/closer.cgi?path=/kafka/2.3.0/kafka_2.11-2.3.0.tgz" target="_blank" rel="noopener">官网</a>选择合适版本下载，并解压。如：kafka_2.12-2.2.0.tgz</p>
+<pre><code>$ cd /test
+$ tar -zxvf kafka_2.12-2.2.0.tgz</code></pre><h3 id="2-3-2-配置环境变量"><a href="#2-3-2-配置环境变量" class="headerlink" title="2.3.2 配置环境变量"></a>2.3.2 配置环境变量</h3><p>打开环境变量配置文件</p>
+<pre><code>$ open -e .bash_profile</code></pre><p>写入内容</p>
+<pre><code>#kafka environment
+export KAFKA_HOME=/test/kafka/kafka_2.12-2.2.0
+export PATH=$PATH:$KAFKA_HOME/bin</code></pre><p>使配置文件生效</p>
+<pre><code>$ source .bash_profile</code></pre><h3 id="2-3-3-常用命令"><a href="#2-3-3-常用命令" class="headerlink" title="2.3.3 常用命令"></a>2.3.3 常用命令</h3><pre><code># 执行以下命令(进入kafka目录)：查看kafka版本
+find ./libs/ -name \*kafka_\* | head -1 | grep -o &apos;\kafka[^\n]*&apos;
+# 启动
+kafka-server-start.sh $KAFKA_HOME/config/server.properties
+# 停止
+kafka-server-stop.sh
+# 创建主题：【–zookeeper：指定kafka连接zk的连接url，该值和server.properties文件中的配置项{zookeeper.connect}一样 ；–replication-factor：指定副本数量 ；–partitions：指定分区数量 ；–topic：主题名称】
+kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+# 查看所有的topic信息，使用--list参数
+kafka-topics.sh --list --zookeeper localhost:2181/kafka
+# 查看kafka特定topic的详情，使用--topic与--describe参数
+kafka-topics.sh --zookeeper localhost:2181/kafka --topic calc_sms_config --describe
+# 查看consumer group列表，使用--list参数
+kafka-consumer-groups.sh --bootstrap-server zk01.test.saas.internal.weyao.com:9092 --list</code></pre>
       
     </div>
     
@@ -650,7 +669,7 @@ zkServer.sh status</code></pre><h2 id="2-3-Kafka环境"><a href="#2-3-Kafka环�
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-前言"><span class="nav-number">1.</span> <span class="nav-text">1 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-搭建环境"><span class="nav-number">2.</span> <span class="nav-text">2 搭建环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-Java环境"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 Java环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-下载并安装JDK"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1 下载并安装JDK</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-2-配置环境变量"><span class="nav-number">2.2.</span> <span class="nav-text">2.1.2 配置环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-Zookeeper环境"><span class="nav-number">2.3.</span> <span class="nav-text">2.2 Zookeeper环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-下载并解压"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.2.1 下载并解压</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-配置环境变量-单机模式"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.2.2 配置环境变量(单机模式)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-系统环境变量设置"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.2.3 系统环境变量设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-常用命令"><span class="nav-number">2.3.4.</span> <span class="nav-text">2.2.3 常用命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-Kafka环境"><span class="nav-number">2.4.</span> <span class="nav-text">2.3 Kafka环境</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-前言"><span class="nav-number">1.</span> <span class="nav-text">1 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-搭建环境"><span class="nav-number">2.</span> <span class="nav-text">2 搭建环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-Java环境"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 Java环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-下载并安装JDK"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1 下载并安装JDK</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-2-配置环境变量"><span class="nav-number">2.2.</span> <span class="nav-text">2.1.2 配置环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-Zookeeper环境"><span class="nav-number">2.3.</span> <span class="nav-text">2.2 Zookeeper环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-下载并解压"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.2.1 下载并解压</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-配置环境变量-单机模式"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.2.2 配置环境变量(单机模式)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-系统环境变量设置"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.2.3 系统环境变量设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-常用命令"><span class="nav-number">2.3.4.</span> <span class="nav-text">2.2.3 常用命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-Kafka环境"><span class="nav-number">2.4.</span> <span class="nav-text">2.3 Kafka环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-下载并解压"><span class="nav-number">2.4.1.</span> <span class="nav-text">2.3.1 下载并解压</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-配置环境变量"><span class="nav-number">2.4.2.</span> <span class="nav-text">2.3.2 配置环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-常用命令"><span class="nav-number">2.4.3.</span> <span class="nav-text">2.3.3 常用命令</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -684,7 +703,7 @@ zkServer.sh status</code></pre><h2 id="2-3-Kafka环境"><a href="#2-3-Kafka环�
     
       <span class="post-meta-item-text">全文字数统计&#58;</span>
     
-    <span title="全文字数统计">3k</span>
+    <span title="全文字数统计">3.3k</span>
   
 
   
