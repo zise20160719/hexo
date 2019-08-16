@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-flash.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java,原理,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文记录Java基础：ArrayList的底层原理实现。">
+<meta name="keywords" content="Java,原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java基础：ArrayList底层原理">
+<meta property="og:url" content="http://yoursite.com/2019/08/14/java-base-arraylist-theory/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文记录Java基础：ArrayList的底层原理实现。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-08-16T05:15:01.743Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java基础：ArrayList底层原理">
+<meta name="twitter:description" content="本文记录Java基础：ArrayList的底层原理实现。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/08/14/java-base-arraylist-theory/">
+
+
+
+
+
+  <title>Java基础：ArrayList底层原理 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/14/java-base-arraylist-theory/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ziser">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java基础：ArrayList底层原理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-14T11:56:37+08:00">
+                2019-08-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java基础/" itemprop="url" rel="index">
+                    <span itemprop="name">Java基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/08/14/java-base-arraylist-theory/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/08/14/java-base-arraylist-theory/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.6k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  10
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  本文记录Java基础：ArrayList的底层原理实现。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1 前言"></a>1 前言</h1><p>ArrayList作为List的典型实现，完全实现了List的全部接口功能，它是基于数组实现的List类，封装了一个Object[]类型的数组，长度可以动态的增长。如果在创建ArrayList时没有指定Object[]数组的长度，则默认创建一个长度为10的数组，当新添加的元素已经没有位置存放的时候，ArrayList就会自动进行扩容，扩容的长度为原来长度的1.5倍。属于线程不安全。</p>
+<pre><code>实现RandomAccess接口：所以ArrayList支持快速随机访问，本质上是通过下标序号随机访问。
+实现Serializable接口：使ArrayList支持序列化，通过序列化传输。
+实现Cloneable解耦：使ArrayList能够克隆。</code></pre><h1 id="2-原理"><a href="#2-原理" class="headerlink" title="2 原理"></a>2 原理</h1><h2 id="2-1-基本特点"><a href="#2-1-基本特点" class="headerlink" title="2.1 基本特点"></a>2.1 基本特点</h2><pre><code>1、底层是一个动态扩容的数组结构
+2、允许存放不止一个null元素
+3、允许存放重复数据，存储顺序按照元素的添加顺序
+4、线程不安全。(线程安全集合：CopyOnWriteArrayList或者Collectiona.synchronizedList)</code></pre><h2 id="2-2-成员属性"><a href="#2-2-成员属性" class="headerlink" title="2.2 成员属性"></a>2.2 成员属性</h2><pre><code>/**
+ * ArrayList 默认的数组容量
+ */
+ private static final int DEFAULT_CAPACITY = 10;
+
+/**
+ * 这是一个共享的空的数组实例，当使用 ArrayList(0) 或者 ArrayList(Collection&lt;? extends E&gt; c) 
+ * 并且 c.size() = 0 的时候讲 elementData 数组讲指向这个实例对象。
+ */
+ private static final Object[] EMPTY_ELEMENTDATA = {};
+
+/**
+ * 另一个共享空数组实例，再第一次 add 元素的时候将使用它来判断数组大小是否设置为 DEFAULT_CAPACITY
+ */
+ private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
+
+/**
+ * 真正装载集合元素的底层数组 
+ * 至于 transient 关键字这里简单说一句，被它修饰的成员变量无法被 Serializable 序列化 
+ * 有兴趣的可以去网上查相关资料
+ */
+transient Object[] elementData; // non-private to simplify nested class access</code></pre><h2 id="2-3-构造方法"><a href="#2-3-构造方法" class="headerlink" title="2.3 构造方法"></a>2.3 构造方法</h2><h3 id="2-3-1-无参构造方法"><a href="#2-3-1-无参构造方法" class="headerlink" title="2.3.1 无参构造方法"></a>2.3.1 无参构造方法</h3><p>构造一个初始容量为10的空列表。创建时为空列表，调用add()方法时，会设置容量为10。</p>
+<pre><code>/**
+ * 构造一个初始容量为10的空列表。
+ */
+public ArrayList() {
+   this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
+}</code></pre><h3 id="2-3-2-指定初始容量的构造方法"><a href="#2-3-2-指定初始容量的构造方法" class="headerlink" title="2.3.2 指定初始容量的构造方法"></a>2.3.2 指定初始容量的构造方法</h3><p>ArrayList自身具有动态扩容的机制，但是每次扩容都需要有一定的内存开销，而这个开销在预先知道容量的时候是可以避免的。</p>
+<pre><code>/**
+ * 构造一个具有指定初始容量的空列表。
+ * @param  初始容量 
+ * @throws 如果参数小于 0 将会抛出 IllegalArgumentException  参数不合法异常
+ */
+public ArrayList(int initialCapacity) {
+   if (initialCapacity &gt; 0) {
+       this.elementData = new Object[initialCapacity];
+   } else if (initialCapacity == 0) {
+       this.elementData = EMPTY_ELEMENTDATA;
+   } else {
+       throw new IllegalArgumentException(&quot;Illegal Capacity: &quot;+
+                                          initialCapacity);
+   }
+}</code></pre><h3 id="2-3-3-使用另一个集合Collection的构造方法"><a href="#2-3-3-使用另一个集合Collection的构造方法" class="headerlink" title="2.3.3 使用另一个集合Collection的构造方法"></a>2.3.3 使用另一个集合Collection的构造方法</h3><pre><code>/**
+ * 构造一个包含指定集合元素的列表，元素的顺序由集合的迭代器返回。
+ *
+ * @param 源集合，其元素将被放置到这个集合中。 
+ * @如果参数为 null，将会抛出 NullPointerException 空指针异常
+ */
+ public ArrayList(Collection&lt;? extends E&gt; c) {
+    elementData = c.toArray();
+    if ((size = elementData.length) != 0) {
+        // c.toArray 可能(错误地)不返回 Object[]类型的数组 参见 jdk 的 bug 列表(6260652)
+        if (elementData.getClass() != Object[].class)
+            elementData = Arrays.copyOf(elementData, size, Object[].class);
+    } else {
+        // 如果集合大小为空将赋值为 EMPTY_ELEMENTDATA 等同于 new ArrayList(0);
+        this.elementData = EMPTY_ELEMENTDATA;
+    }
+}</code></pre><h4 id="2-3-3-1-Collection-toArray-方法"><a href="#2-3-3-1-Collection-toArray-方法" class="headerlink" title="2.3.3.1 Collection.toArray()方法"></a>2.3.3.1 Collection.toArray()方法</h4><p>Collection是集合框架的超类，Collection.toArray()方法是交给具体的集合子类去实现的。ArrayList的实现是 a.clone()</p>
+<h4 id="2-3-3-2-Arrays-copyOf-方法"><a href="#2-3-3-2-Arrays-copyOf-方法" class="headerlink" title="2.3.3.2 Arrays.copyOf()方法"></a>2.3.3.2 Arrays.copyOf()方法</h4><p>Arrays.copyOf 方法复制数组的时候先判断了指定的数组类型是否为 Object[] 类型，否则使用反射去构造一个指定类型的数组。</p>
+<h2 id="2-4-ArrayList的添加元素-amp-扩容机制"><a href="#2-4-ArrayList的添加元素-amp-扩容机制" class="headerlink" title="2.4 ArrayList的添加元素&amp;扩容机制"></a>2.4 ArrayList的添加元素&amp;扩容机制</h2><h3 id="2-4-1-在集合末尾添加一个元素"><a href="#2-4-1-在集合末尾添加一个元素" class="headerlink" title="2.4.1 在集合末尾添加一个元素"></a>2.4.1 在集合末尾添加一个元素</h3><p>调用add方式的时候总会调用ensureCapacityInternal来判断是否需要进行数组扩容，看当前底层数组是否够放 size+1 个元素。</p>
+<pre><code>//成员变量 size 标识集合当前元素个数初始为 0
+int size；
+/**
+ * 将指定元素添加到集合（底层数组）末尾
+ * @param 将要添加的元素
+ * @return 返回 true 表示添加成功
+ */
+ public boolean add(E e) {
+    //检查当前底层数组容量，如果容量不够则进行扩容
+    ensureCapacityInternal(size + 1);  // Increments modCount!!
+    //将数组添加一个元素，size 加 1
+    elementData[size++] = e;
+    return true;
+ }</code></pre><h3 id="2-4-2-扩容机制"><a href="#2-4-2-扩容机制" class="headerlink" title="2.4.2 扩容机制"></a>2.4.2 扩容机制</h3><h4 id="2-4-2-1-扩容判断"><a href="#2-4-2-1-扩容判断" class="headerlink" title="2.4.2.1 扩容判断"></a>2.4.2.1 扩容判断</h4><p>扩容前的判断操作，参数为当前集合元素个数+1</p>
+<pre><code>//扩容检查
+private void ensureCapacityInternal(int minCapacity) {
+    //如果是无参构造方法构造的的集合，第一次添加元素的时候会满足这个条件 minCapacity 将会被赋值为 10
+   if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
+       minCapacity = Math.max(DEFAULT_CAPACITY, minCapacity);
+   }
+    // 将 size + 1 或 10 传入 ensureExplicitCapacity 进行扩容判断
+   ensureExplicitCapacity(minCapacity);
+}
+
+private void ensureExplicitCapacity(int minCapacity) {
+  //操作数加 1 用于保证并发访问 
+   modCount++;
+   // 如果 当前数组的长度比添加元素后的长度要小则进行扩容 
+   if (minCapacity - elementData.length &gt; 0)
+       grow(minCapacity);
+}</code></pre><h4 id="2-4-2-2-扩容操作"><a href="#2-4-2-2-扩容操作" class="headerlink" title="2.4.2.2 扩容操作"></a>2.4.2.2 扩容操作</h4><p>1、每次扩容的大小为原来大小的1.5倍(不包括1.5倍后大于MAX_ARRAY_SIZE的情况)<br>2、扩容的过程其实是一个将原来元素拷贝到一个扩容后数组大小长度的新数组中，所以ArrayList的扩容是相对来说比较消耗性能的。</p>
+<pre><code>/**
+ * 集合的最大长度 Integer.MAX_VALUE - 8 是为了减少出错的几率 Integer 最大值已经很大了
+ */
+private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
+
+/**
+ * 增加容量，以确保它至少能容纳最小容量参数指定的元素个数。
+ * @param 满足条件的最小容量
+ */
+private void grow(int minCapacity) {
+  //获取当前 elementData 的大小，也就是 List 中当前的容量
+   int oldCapacity = elementData.length;
+   //oldCapacity &gt;&gt; 1 等价于 oldCapacity / 2  所以新容量为当前容量的 1.5 倍
+   int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1);
+   //如果扩大1.5倍后仍旧比 minCapacity 小那么直接等于 minCapacity
+   if (newCapacity - minCapacity &lt; 0)
+       newCapacity = minCapacity;
+    //如果新数组大小比  MAX_ARRAY_SIZE 就需要进一步比较 minCapacity 和 MAX_ARRAY_SIZE 的大小
+   if (newCapacity - MAX_ARRAY_SIZE &gt; 0)
+       newCapacity = hugeCapacity(minCapacity);
+   // minCapacity通常接近 size 大小
+   //使用 Arrays.copyOf 构建一个长度为 newCapacity 新数组 并将 elementData 指向新数组
+   elementData = Arrays.copyOf(elementData, newCapacity);
+}
+
+/**
+ * 比较 minCapacity 与 Integer.MAX_VALUE - 8 的大小如果大则放弃-8的设定，设置为 Integer.MAX_VALUE 
+ */
+private static int hugeCapacity(int minCapacity) {
+   if (minCapacity &lt; 0) // overflow
+       throw new OutOfMemoryError();
+   return (minCapacity &gt; MAX_ARRAY_SIZE) ?
+       Integer.MAX_VALUE :
+       MAX_ARRAY_SIZE;
+}</code></pre><h3 id="2-4-3-在指定角标位置添加元素"><a href="#2-4-3-在指定角标位置添加元素" class="headerlink" title="2.4.3 在指定角标位置添加元素"></a>2.4.3 在指定角标位置添加元素</h3><p>数组是不能在角标位置直接插入元素的，ArrayList通过数组拷贝的方法将指定角标位置以及其后续元素整体向后移动一个位置，空出index角标的位置，来赋值新的元素。</p>
+<pre><code>/**
+* 将指定的元素插入该列表中的指定位置。将当前位置的元素(如果有)和任何后续元素移到右边(将一个元素添加到它们的索引中)。
+* 
+* @param 要插入的索引位置
+* @param 要添加的元素
+* @throws 如果 index 大于集合长度 小于 0 则抛出角标越界 IndexOutOfBoundsException 异常
+*/
+public void add(int index, E element) {
+   // 检查角标是否越界
+   rangeCheckForAdd(index);
+    // 扩容检查
+   ensureCapacityInternal(size + 1);      
+   //调用 native 方法新型数组拷贝
+   System.arraycopy(elementData, index, elementData, 
+                    index + 1,size - index);
+    // 添加新元素
+   elementData[index] = element;
+   size++;
+}</code></pre><h2 id="2-5-删除元素"><a href="#2-5-删除元素" class="headerlink" title="2.5 删除元素"></a>2.5 删除元素</h2><h3 id="2-5-1-根据角标删除元素"><a href="#2-5-1-根据角标删除元素" class="headerlink" title="2.5.1 根据角标删除元素"></a>2.5.1 根据角标删除元素</h3><p>通过 System.arraycopy 将 index 之后的元素前移一位，并释放原来位于 size 位置的元素。</p>
+<pre><code>/**
+* 将任何后续元素移到左边(从它们的索引中减去一个)。
+*/
+public E remove(int index) {
+   //检查 index 是否 &gt;= size
+   rangeCheck(index);
+
+   modCount++;
+   //index 位置的元素 
+   E oldValue = elementData(index);
+    // 需要移动的元素个数
+   int numMoved = size - index - 1;
+   if (numMoved &gt; 0)
+        //采用拷贝赋值的方法将 index 之后所有的元素 向前移动一个位置
+       System.arraycopy(elementData, index+1, elementData, index,
+                        numMoved);
+   // 将 element 末尾的元素位置设为 null                 
+   elementData[--size] = null; // clear to let GC do its work
+    // 返回 index 位置的元素 
+   return oldValue;
+}
+
+// 比较要移除的角标位置和当前 elementData 中元素的个数
+private void rangeCheck(int index) {
+        if (index &gt;= size)
+            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+}</code></pre><h3 id="2-5-2-移除指定元素"><a href="#2-5-2-移除指定元素" class="headerlink" title="2.5.2 移除指定元素"></a>2.5.2 移除指定元素</h3><p>通过 System.arraycopy 将 index 之后的元素前移一位，并释放原来位于 size 位置的元素。如果数组中有指定多个与 o 相同的元素只会移除角标最小的那个，并且 null 和 非null 的时候判断方法不一样。</p>
+<pre><code>/**
+* 删除指定元素，如果它存在则反会 true，如果不存在返回 false。
+* 更准确地说是删除集合中第一出现 o 元素位置的元素 ，
+* 也就是说只会删除一个，并且如果有重复的话，只会删除第一个次出现的位置。
+*/
+public boolean remove(Object o) {
+    // 如果元素为空则只需判断 == 也就是内存地址
+   if (o == null) {
+       for (int index = 0; index &lt; size; index++)
+           if (elementData[index] == null) {
+                //得到第一个等于 null 的元素角标并移除该元素 返回 ture
+               fastRemove(index);
+               return true;
+           }
+   } else {
+        // 如果元素不为空则需要用 equals 判断。
+       for (int index = 0; index &lt; size; index++)
+           if (o.equals(elementData[index])) {
+                //得到第一个等于 o 的元素角标并移除该元素 返回 ture
+               fastRemove(index);
+               return true;
+           }
+   }
+   return false;
+}
+
+//移除元素的逻辑和 remve(Index)一样 
+private void fastRemove(int index) {
+   modCount++;
+   int numMoved = size - index - 1;
+   if (numMoved &gt; 0)
+       System.arraycopy(elementData, index+1, elementData, index,
+                        numMoved);
+   elementData[--size] = null; // clear to let GC do its work
+}</code></pre><h1 id="3-总结"><a href="#3-总结" class="headerlink" title="3 总结"></a>3 总结</h1><pre><code>1、ArrayList底层是一个动态扩容的数组结构，每次扩容需要增加1.5的容量；
+2、ArrayList 扩容底层是通过 Arrays.CopyOf 和  System.arraycopy 来实现的。每次都会产生新的数组，和数组中内容的拷贝，所以会耗费性能，所以在多增删的操作的情况可优先考虑 LinkList 而不是 ArrayList；
+3、ArrayList 的 toArray 方法重载方法的使用；
+4、允许存放（不止一个） null 元素
+5、允许存放重复数据，存储顺序按照元素的添加顺序
+6、ArrayList 并不是一个线程安全的集合。如果集合的增删操作需要保证线程的安全性，可以考虑使用 CopyOnWriteArrayList 或者使Collections.synchronizedList(List l)函数返回一个线程安全的ArrayList类
+7、不正确访问集合元素的时候 ConcurrentModificationException和 java.lang.IndexOutOfBoundsException 异常产生的时机和原理</code></pre><h1 id="4-参考"><a href="#4-参考" class="headerlink" title="4 参考"></a>4 参考</h1><pre><code>参考文章：https://www.jianshu.com/p/ccddd869d651?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/原理/" rel="tag"># 原理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/12/mq-kafka-environment/" rel="next" title="Kafka环境搭建">
+                <i class="fa fa-chevron-left"></i> Kafka环境搭建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments"></div>
+    
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/valine@1.1.6/dist/Valine.min.js"></script>
+    <script>
+        new Valine({
+            av: AV,
+            el: '.comments',
+            notify: true, // �ʼ����� v1.1.4��������һ�����о������������
+            verify: true,
+            app_id: '',
+            app_key: '',
+            placeholder: '�d?�R?�Q)o��������!'
+        });
+    </script>
+    
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Ziser</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-前言"><span class="nav-number">1.</span> <span class="nav-text">1 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-原理"><span class="nav-number">2.</span> <span class="nav-text">2 原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-基本特点"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 基本特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-成员属性"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 成员属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-构造方法"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 构造方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-无参构造方法"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1 无参构造方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-指定初始容量的构造方法"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2 指定初始容量的构造方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-使用另一个集合Collection的构造方法"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.3.3 使用另一个集合Collection的构造方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-1-Collection-toArray-方法"><span class="nav-number">2.3.3.1.</span> <span class="nav-text">2.3.3.1 Collection.toArray()方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-2-Arrays-copyOf-方法"><span class="nav-number">2.3.3.2.</span> <span class="nav-text">2.3.3.2 Arrays.copyOf()方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-ArrayList的添加元素-amp-扩容机制"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 ArrayList的添加元素&amp;扩容机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-1-在集合末尾添加一个元素"><span class="nav-number">2.4.1.</span> <span class="nav-text">2.4.1 在集合末尾添加一个元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-2-扩容机制"><span class="nav-number">2.4.2.</span> <span class="nav-text">2.4.2 扩容机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-1-扩容判断"><span class="nav-number">2.4.2.1.</span> <span class="nav-text">2.4.2.1 扩容判断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-2-扩容操作"><span class="nav-number">2.4.2.2.</span> <span class="nav-text">2.4.2.2 扩容操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-3-在指定角标位置添加元素"><span class="nav-number">2.4.3.</span> <span class="nav-text">2.4.3 在指定角标位置添加元素</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-删除元素"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 删除元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-1-根据角标删除元素"><span class="nav-number">2.5.1.</span> <span class="nav-text">2.5.1 根据角标删除元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-2-移除指定元素"><span class="nav-number">2.5.2.</span> <span class="nav-text">2.5.2 移除指定元素</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-总结"><span class="nav-number">3.</span> <span class="nav-text">3 总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-参考"><span class="nav-number">4.</span> <span class="nav-text">4 参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ziser</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">全文字数统计&#58;</span>
+    
+    <span title="全文字数统计">5.9k</span>
+  
+
+  
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客<span id="busuanzi_value_site_uv"></span>人</span>
+    
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'vVBUnBwVuGMKE0xQR2kPsLSX-gzGzoHsz',
+        appKey: 'P3b9ampXtgOvphoL0hYQ9VEX',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
