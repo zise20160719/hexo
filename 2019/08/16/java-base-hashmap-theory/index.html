@@ -101,7 +101,7 @@
 
 
 
-  <meta name="keywords" content="环境搭建,">
+  <meta name="keywords" content="Java,原理,">
 
 
 
@@ -112,18 +112,21 @@
 
 
 
-<meta name="description" content="本文记录基于mac下的Kafka环境的搭建。">
-<meta name="keywords" content="环境搭建">
+<meta name="description" content="本文记录Java基础：HashMap的底层原理实现。">
+<meta name="keywords" content="Java,原理">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Kafka环境搭建">
-<meta property="og:url" content="http://yoursite.com/2019/08/12/mq-kafka-environment/index.html">
+<meta property="og:title" content="Java基础：HashMap底层原理">
+<meta property="og:url" content="http://yoursite.com/2019/08/16/java-base-hashmap-theory/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="本文记录基于mac下的Kafka环境的搭建。">
+<meta property="og:description" content="本文记录Java基础：HashMap的底层原理实现。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-13T09:03:39.959Z">
+<meta property="og:image" content="http://yoursite.com/.com//2.2.1.jpg">
+<meta property="og:image" content="http://yoursite.com/.com//2.2.2.jpg">
+<meta property="og:updated_time" content="2019-08-22T07:25:42.955Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kafka环境搭建">
-<meta name="twitter:description" content="本文记录基于mac下的Kafka环境的搭建。">
+<meta name="twitter:title" content="Java基础：HashMap底层原理">
+<meta name="twitter:description" content="本文记录Java基础：HashMap的底层原理实现。">
+<meta name="twitter:image" content="http://yoursite.com/.com//2.2.1.jpg">
 
 
 
@@ -153,13 +156,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/08/12/mq-kafka-environment/">
+  <link rel="canonical" href="http://yoursite.com/2019/08/16/java-base-hashmap-theory/">
 
 
 
 
 
-  <title>Kafka环境搭建 | Hexo</title>
+  <title>Java基础：HashMap底层原理 | Hexo</title>
   
 
 
@@ -296,7 +299,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/12/mq-kafka-environment/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/16/java-base-hashmap-theory/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ziser">
@@ -313,7 +316,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Kafka环境搭建</h1>
+          <h1 class="post-title" itemprop="name headline">Java基础：HashMap底层原理</h1>
         
 
         <div class="post-meta">
@@ -325,8 +328,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-12T17:04:43+08:00">
-                2019-08-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-16T13:16:49+08:00">
+                2019-08-16
               </time>
             
 
@@ -348,8 +351,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/环境搭建/" itemprop="url" rel="index">
-                    <span itemprop="name">环境搭建</span>
+                  <a href="/categories/Java基础/" itemprop="url" rel="index">
+                    <span itemprop="name">Java基础</span>
                   </a>
                 </span>
 
@@ -366,8 +369,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/08/12/mq-kafka-environment/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/08/12/mq-kafka-environment/" itemprop="commentCount"></span>
+                <a href="/2019/08/16/java-base-hashmap-theory/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/08/16/java-base-hashmap-theory/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -389,7 +392,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  632
+                  1.5k
                 </span>
               
 
@@ -405,7 +408,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2
+                  5
                 </span>
               
             </div>
@@ -413,7 +416,7 @@
 
           
               <div class="post-description">
-                  本文记录基于mac下的Kafka环境的搭建。
+                  本文记录Java基础：HashMap的底层原理实现。
               </div>
           
 
@@ -430,63 +433,19 @@
       
 
       
-        <h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1 前言"></a>1 前言</h1><p>待补充，写一些Kafka的描述。</p>
-<h1 id="2-搭建环境"><a href="#2-搭建环境" class="headerlink" title="2 搭建环境"></a>2 搭建环境</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1、Java环境安装；</span><br><span class="line">2、Zookeeper环境安装；</span><br><span class="line">3、Kafka环境安装</span><br></pre></td></tr></table></figure>
+        <h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><pre><code>1、HashMap存储数据是根据键值对存储数据的，并且存储多个数据时，数据的键不能相同，如果相同该键之前的值将被覆盖。
+2、HashMap存储数据的位置与添加数据的键的hashcode()返回值有关。
+3、HashMap最多只允许一条存储数据的键为null，可允许多条数据的值为null。
+4、HashMap存储数据的顺序是不确定的，并且可能会因为扩容导致元素存储位置改变。因此遍历顺序是不确定的。
+5、HashMap是线程不安全的，如果在多线程的情况可以用Collections.synchronizedMap(Map map) 方法使 HashMap 具有线程安全的能力，或者使用 ConcurrentHashMap </code></pre><h1 id="2-原理"><a href="#2-原理" class="headerlink" title="2 原理"></a>2 原理</h1><h2 id="2-1-底层数据存储"><a href="#2-1-底层数据存储" class="headerlink" title="2.1 底层数据存储"></a>2.1 底层数据存储</h2><p>JDK1.8后对于HashMap做了底层实现的改动。</p>
+<h3 id="2-1-1-JDK1-7之前的存储结构"><a href="#2-1-1-JDK1-7之前的存储结构" class="headerlink" title="2.1.1 JDK1.7之前的存储结构"></a>2.1.1 JDK1.7之前的存储结构</h3><p>即使hashCode()方法已经写得很完美了，终究还是有可能导致 hash碰撞的，HashMap作为使用hash值来决定元素存储位置的集合也是需要处理hash冲突的。在1.7之前JDK采用 拉链法 来存储数据，即数组和链表结合的方式。<br><img src="/.com//2.2.1.jpg" alt="avatar"></p>
+<p>链地址法：数据加链表的结合。在每个数据元素上存储的都是一个链条。不同的key通过hash运算可能会得到相同的地址，但还是一个数组单位上只能存放一个元素，才使用链地址法，如果遇到相同的hash值的key，可以将它放到作为数组元素的链表上。取元素的时候，通过hash运算的结果找到这个链表，再在链表中找到与key相同的节点，就能找到key相应的值。</p>
+<h3 id="2-1-2-JDK1-8中存储结构"><a href="#2-1-2-JDK1-8中存储结构" class="headerlink" title="2.1.2 JDK1.8中存储结构"></a>2.1.2 JDK1.8中存储结构</h3><p>对于JDK1.8之后的HashMap底层在解决哈希冲突的时候，就不单单是使用数组加上单链表的组合了，因为当处理如果hash值冲突较多的情况下，链表的长度就会越来越来，查找时的时间复杂度达到O(n)，因此在JDK1.8之后，在链表新增节点导致链表长度超过TREEIFY_THRESHOLD = 8 的时候，就会在添加元素的同时，将原来的单链表转化为红黑数。<br><img src="/.com//2.2.2.jpg" alt="avatar"></p>
+<p>红黑树：一种易于增删改查的二叉树，对于数据的查询时间复杂度是O(logn)级别，所以利用红黑树的特点就可以更高效的对HashMap中的元素进行操作。</p>
+<h2 id="2-2-重要概念"><a href="#2-2-重要概念" class="headerlink" title="2.2 重要概念"></a>2.2 重要概念</h2><p>1、哈希桶(buckets)：使用哈希桶来形象的标识数组中每个地址位置。被称为哈希表；<br>2、初始容量(initial capacity)：哈希表汇总哈希桶初始的容量。如果没有通过构造方法修改，这个容量默认是16。为了保证HashMap添加和查找的高效性，HashMap的容量总是2^n的形式。<br>3、加载因子(load factor)：哈希表在其容量自动增加之前被允许获得的最大数量的度量。当哈希表的条目数量超过负载因子和当前容量的乘积时，散列表就会被重新映射(即重建内部数据结构)，重建的散列表容量大约是之前散列表的两倍。默认加载因子(0.75)在时间和空间成本之间提供了良好的折中。加载因子过大会导致很容易链表过长，加载因子很小有容易导致频繁的扩容。<br>4、扩容阈值(threshold)：等于 哈希表容量 * 加载因子。<br>5、树化阈值(TREEIFY_THRESHOLD)：JDK1.8之后加入，代表一个哈希桶中的节点个数大于该值(默认为8)的时候将会被转为红黑树行存储结构。<br>6、非树化阈值(UNTREEIFY_THRESHOLD)：与树化阈值相对应，表示当一个已经转化为树形存储结构的哈希桶中节点数量小于该值(默认为6)的时候将再次改为单链表的格式存储。导致这种操作的原因可能有删除节点或者扩容。<br>7、最小树化容量(MIN_TREEIFY_CAPACITY)：当链表的节点数超过8的时候就会转化为树形存储，其实对于转化还有一个要求：哈希表的数量超过最小树化容量(默认64)，且为了避免进行扩容、树形化选择的冲突，这个不能小于4*TREEIFY_THRESHOLD。在达到该要求之前优先进行扩容。</p>
+<h2 id="2-3-构造方法"><a href="#2-3-构造方法" class="headerlink" title="2.3 构造方法"></a>2.3 构造方法</h2><h3 id="2-3-1-指定容量和构造因子"><a href="#2-3-1-指定容量和构造因子" class="headerlink" title="2.3.1 指定容量和构造因子"></a>2.3.1 指定容量和构造因子</h3><h3 id="2-3-2-指定初始容量的构造函数"><a href="#2-3-2-指定初始容量的构造函数" class="headerlink" title="2.3.2 指定初始容量的构造函数"></a>2.3.2 指定初始容量的构造函数</h3><h3 id="2-3-3-无参构造函数"><a href="#2-3-3-无参构造函数" class="headerlink" title="2.3.3 无参构造函数"></a>2.3.3 无参构造函数</h3><h3 id="2-3-4-传入一个Map集合的构造函数"><a href="#2-3-4-传入一个Map集合的构造函数" class="headerlink" title="2.3.4 传入一个Map集合的构造函数"></a>2.3.4 传入一个Map集合的构造函数</h3><h2 id="2-4-HashMap如何确定添加元素的位置"><a href="#2-4-HashMap如何确定添加元素的位置" class="headerlink" title="2.4 HashMap如何确定添加元素的位置"></a>2.4 HashMap如何确定添加元素的位置</h2><p>在存储元素之前，HashMap 会对 key 的 hashCode 返回值做进一步扰动函数处理。<br>1.7 中扰动函数使用了 4次位运算 + 5次异或运算；<br>1.8 中降低到 1次位运算 + 1次异或运算扰动处理后的 hash 与 哈希表数组length -1 做位与运算得到最终元素储存的哈希桶角标位置。</p>
+<h1 id="3-HashTable的区别"><a href="#3-HashTable的区别" class="headerlink" title="3 HashTable的区别"></a>3 HashTable的区别</h1><p>1、HashMap是线程不安全的，HashTable是线程安全的；<br>2、HashMap允许key和Value是null，但是只允许一个key为null，且这个元素存放在哈希表0角标位置。HashTable不允许key、value是null<br>3、HashMap内部使用hash(Object key)扰动函数对key的hashcode进行扰动后作为hash值。HashTable是直接使用key的hashcode返回值为hash值<br>4、HashMap默认容量为2^4 且容量一定是2^n；HashTable默认容量是11，不一定是2^n 。<br>5、HashMap在扩容的时候是原来的两倍，且哈希桶的下标使用&amp;运算代替了取模；HashTable取哈希桶下标是直接用模运算，扩容时新容量是原来的2倍+1。</p>
 
-<h2 id="2-1-Java环境"><a href="#2-1-Java环境" class="headerlink" title="2.1 Java环境"></a>2.1 Java环境</h2><h3 id="2-1-1-下载并安装JDK"><a href="#2-1-1-下载并安装JDK" class="headerlink" title="2.1.1 下载并安装JDK"></a>2.1.1 下载并安装JDK</h3><p>从<a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="noopener">JDK官网</a>下载指定的JDK版本，一步步安装。</p>
-<h2 id="2-1-2-配置环境变量"><a href="#2-1-2-配置环境变量" class="headerlink" title="2.1.2 配置环境变量"></a>2.1.2 配置环境变量</h2><p>打开环境变量配置文件</p>
-<pre><code>$ open -e .bash_profile</code></pre><p>写入内容</p>
-<pre><code>#java environment
-export JAVA_HOME=/test/java/jdk1.8.0_181/
-export CLASSPATH=.:${JAVA_HOME}/jre/lib/rt.jar:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib/tools.jar
-export PATH=$PATH:${JAVA_HOME}/bin</code></pre><p>使配置文件生效</p>
-<pre><code>$ source .bash_profile
-$ java -version</code></pre><h2 id="2-2-Zookeeper环境"><a href="#2-2-Zookeeper环境" class="headerlink" title="2.2 Zookeeper环境"></a>2.2 Zookeeper环境</h2><h3 id="2-2-1-下载并解压"><a href="#2-2-1-下载并解压" class="headerlink" title="2.2.1 下载并解压"></a>2.2.1 下载并解压</h3><p>从<a href="https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/" target="_blank" rel="noopener">官网</a>选择合适版本下载，并解压。注意：需要下载带bin的版本，如：apache-zookeeper-3.5.5-bin.tar.gz</p>
-<pre><code>$ cd /test
-$ tar -zxvf apache-zookeeper-3.5.5-bin.tar.gz</code></pre><p>目录结构</p>
-<pre><code>.
-|-- bin
-|-- conf
-|-- docs
-|-- lib
-`-- logs</code></pre><h3 id="2-2-2-配置环境变量-单机模式"><a href="#2-2-2-配置环境变量-单机模式" class="headerlink" title="2.2.2 配置环境变量(单机模式)"></a>2.2.2 配置环境变量(单机模式)</h3><p>在conf目录下配置zoo.cfg文件</p>
-<pre><code>$ cd conf
-$ cp zoo_sample.cfg zoo.cfg
-$ vi zoo.cfg</code></pre><p>修改如下参数：</p>
-<pre><code>tickTime=2000  # zookeeper中使用的基本时间单位, 毫秒值.
-dataDir= /data/zookeeper/data  #填写自己的data目录
-dataLogDir=/data/zookeeper/logs  # 日志目录
-clientPort=2181 #监听client连接的端口号.</code></pre><h3 id="2-2-3-系统环境变量设置"><a href="#2-2-3-系统环境变量设置" class="headerlink" title="2.2.3 系统环境变量设置"></a>2.2.3 系统环境变量设置</h3><p>打开环境变量配置文件</p>
-<pre><code>$ open -e .bash_profile</code></pre><p>写入内容</p>
-<pre><code>#zookeeper environment
-export ZOOKEEPER_HOME=/test/zookeeper/apache-zookeeper-3.5.5-bin
-export PATH=$PATH:$ZOOKEEPER_HOME/bin</code></pre><p>使配置文件生效</p>
-<pre><code>$ source .bash_profile</code></pre><h3 id="2-2-3-常用命令"><a href="#2-2-3-常用命令" class="headerlink" title="2.2.3 常用命令"></a>2.2.3 常用命令</h3><pre><code>## 启动
-zkServer.sh start
-## 停止
-zkServer.sh stop
-## 状态
-zkServer.sh status</code></pre><h2 id="2-3-Kafka环境"><a href="#2-3-Kafka环境" class="headerlink" title="2.3 Kafka环境"></a>2.3 Kafka环境</h2><h3 id="2-3-1-下载并解压"><a href="#2-3-1-下载并解压" class="headerlink" title="2.3.1 下载并解压"></a>2.3.1 下载并解压</h3><p>从<a href="https://www.apache.org/dyn/closer.cgi?path=/kafka/2.3.0/kafka_2.11-2.3.0.tgz" target="_blank" rel="noopener">官网</a>选择合适版本下载，并解压。如：kafka_2.12-2.2.0.tgz</p>
-<pre><code>$ cd /test
-$ tar -zxvf kafka_2.12-2.2.0.tgz</code></pre><h3 id="2-3-2-配置环境变量"><a href="#2-3-2-配置环境变量" class="headerlink" title="2.3.2 配置环境变量"></a>2.3.2 配置环境变量</h3><p>打开环境变量配置文件</p>
-<pre><code>$ open -e .bash_profile</code></pre><p>写入内容</p>
-<pre><code>#kafka environment
-export KAFKA_HOME=/test/kafka/kafka_2.12-2.2.0
-export PATH=$PATH:$KAFKA_HOME/bin</code></pre><p>使配置文件生效</p>
-<pre><code>$ source .bash_profile</code></pre><h3 id="2-3-3-常用命令"><a href="#2-3-3-常用命令" class="headerlink" title="2.3.3 常用命令"></a>2.3.3 常用命令</h3><pre><code># 执行以下命令(进入kafka目录)：查看kafka版本
-find ./libs/ -name \*kafka_\* | head -1 | grep -o &apos;\kafka[^\n]*&apos;
-# 启动
-kafka-server-start.sh $KAFKA_HOME/config/server.properties
-# 停止
-kafka-server-stop.sh
-# 创建主题：【–zookeeper：指定kafka连接zk的连接url，该值和server.properties文件中的配置项{zookeeper.connect}一样 ；–replication-factor：指定副本数量 ；–partitions：指定分区数量 ；–topic：主题名称】
-kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
-# 查看所有的topic信息，使用--list参数
-kafka-topics.sh --list --zookeeper localhost:2181/kafka
-# 查看kafka特定topic的详情，使用--topic与--describe参数
-kafka-topics.sh --zookeeper localhost:2181/kafka --topic calc_sms_config --describe
-# 查看consumer group列表，使用--list参数
-kafka-consumer-groups.sh --bootstrap-server zk01.test.saas.internal.weyao.com:9092 --list</code></pre>
       
     </div>
     
@@ -503,7 +462,9 @@ kafka-consumer-groups.sh --bootstrap-server zk01.test.saas.internal.weyao.com:90
       
         <div class="post-tags">
           
-            <a href="/tags/环境搭建/" rel="tag"># 环境搭建</a>
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/原理/" rel="tag"># 原理</a>
           
         </div>
       
@@ -516,8 +477,8 @@ kafka-consumer-groups.sh --bootstrap-server zk01.test.saas.internal.weyao.com:90
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/12/hexo-environment-build/" rel="next" title="个人博客搭建：Hexo + GitHub">
-                <i class="fa fa-chevron-left"></i> 个人博客搭建：Hexo + GitHub
+              <a href="/2019/08/14/java-base-arraylist-theory/" rel="next" title="Java基础：ArrayList底层原理">
+                <i class="fa fa-chevron-left"></i> Java基础：ArrayList底层原理
               </a>
             
           </div>
@@ -525,10 +486,6 @@ kafka-consumer-groups.sh --bootstrap-server zk01.test.saas.internal.weyao.com:90
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/14/java-base-arraylist-theory/" rel="prev" title="Java基础：ArrayList底层原理">
-                Java基础：ArrayList底层原理 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -673,7 +630,7 @@ kafka-consumer-groups.sh --bootstrap-server zk01.test.saas.internal.weyao.com:90
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-前言"><span class="nav-number">1.</span> <span class="nav-text">1 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-搭建环境"><span class="nav-number">2.</span> <span class="nav-text">2 搭建环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-Java环境"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 Java环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-下载并安装JDK"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1 下载并安装JDK</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-2-配置环境变量"><span class="nav-number">2.2.</span> <span class="nav-text">2.1.2 配置环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-Zookeeper环境"><span class="nav-number">2.3.</span> <span class="nav-text">2.2 Zookeeper环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-下载并解压"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.2.1 下载并解压</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-配置环境变量-单机模式"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.2.2 配置环境变量(单机模式)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-系统环境变量设置"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.2.3 系统环境变量设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-常用命令"><span class="nav-number">2.3.4.</span> <span class="nav-text">2.2.3 常用命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-Kafka环境"><span class="nav-number">2.4.</span> <span class="nav-text">2.3 Kafka环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-下载并解压"><span class="nav-number">2.4.1.</span> <span class="nav-text">2.3.1 下载并解压</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-配置环境变量"><span class="nav-number">2.4.2.</span> <span class="nav-text">2.3.2 配置环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-常用命令"><span class="nav-number">2.4.3.</span> <span class="nav-text">2.3.3 常用命令</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-概述"><span class="nav-number">1.</span> <span class="nav-text">1 概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-原理"><span class="nav-number">2.</span> <span class="nav-text">2 原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-底层数据存储"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 底层数据存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-JDK1-7之前的存储结构"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1 JDK1.7之前的存储结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-JDK1-8中存储结构"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2 JDK1.8中存储结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-重要概念"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 重要概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-构造方法"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 构造方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-指定容量和构造因子"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1 指定容量和构造因子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-指定初始容量的构造函数"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2 指定初始容量的构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-无参构造函数"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.3.3 无参构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-4-传入一个Map集合的构造函数"><span class="nav-number">2.3.4.</span> <span class="nav-text">2.3.4 传入一个Map集合的构造函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-HashMap如何确定添加元素的位置"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 HashMap如何确定添加元素的位置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-HashTable的区别"><span class="nav-number">3.</span> <span class="nav-text">3 HashTable的区别</span></a></li></ol></div>
             
 
           </div>
