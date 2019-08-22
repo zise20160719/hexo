@@ -112,21 +112,18 @@
 
 
 
-<meta name="description" content="本文记录Java基础：HashMap的底层原理实现。">
+<meta name="description" content="本文记录Java中级：线程池基本原理。">
 <meta name="keywords" content="Java,原理">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java基础：HashMap底层原理">
-<meta property="og:url" content="http://yoursite.com/2019/08/16/java-base-hashmap-theory/index.html">
+<meta property="og:title" content="Java中级：线程池基本原理">
+<meta property="og:url" content="http://yoursite.com/2019/08/22/java-middle-threadpool/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="本文记录Java基础：HashMap的底层原理实现。">
+<meta property="og:description" content="本文记录Java中级：线程池基本原理。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/.com//2.2.1.jpg">
-<meta property="og:image" content="http://yoursite.com/.com//2.2.2.jpg">
-<meta property="og:updated_time" content="2019-08-22T07:25:42.955Z">
+<meta property="og:updated_time" content="2019-08-22T07:58:18.166Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java基础：HashMap底层原理">
-<meta name="twitter:description" content="本文记录Java基础：HashMap的底层原理实现。">
-<meta name="twitter:image" content="http://yoursite.com/.com//2.2.1.jpg">
+<meta name="twitter:title" content="Java中级：线程池基本原理">
+<meta name="twitter:description" content="本文记录Java中级：线程池基本原理。">
 
 
 
@@ -156,13 +153,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/08/16/java-base-hashmap-theory/">
+  <link rel="canonical" href="http://yoursite.com/2019/08/22/java-middle-threadpool/">
 
 
 
 
 
-  <title>Java基础：HashMap底层原理 | Hexo</title>
+  <title>Java中级：线程池基本原理 | Hexo</title>
   
 
 
@@ -299,7 +296,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/16/java-base-hashmap-theory/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/22/java-middle-threadpool/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ziser">
@@ -316,7 +313,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java基础：HashMap底层原理</h1>
+          <h1 class="post-title" itemprop="name headline">Java中级：线程池基本原理</h1>
         
 
         <div class="post-meta">
@@ -328,8 +325,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-16T13:16:49+08:00">
-                2019-08-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-22T15:37:32+08:00">
+                2019-08-22
               </time>
             
 
@@ -351,8 +348,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java基础/" itemprop="url" rel="index">
-                    <span itemprop="name">Java基础</span>
+                  <a href="/categories/Java中级/" itemprop="url" rel="index">
+                    <span itemprop="name">Java中级</span>
                   </a>
                 </span>
 
@@ -369,8 +366,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/08/16/java-base-hashmap-theory/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/08/16/java-base-hashmap-theory/" itemprop="commentCount"></span>
+                <a href="/2019/08/22/java-middle-threadpool/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/08/22/java-middle-threadpool/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -392,7 +389,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.5k
+                  1.6k
                 </span>
               
 
@@ -416,7 +413,7 @@
 
           
               <div class="post-description">
-                  本文记录Java基础：HashMap的底层原理实现。
+                  本文记录Java中级：线程池基本原理。
               </div>
           
 
@@ -433,18 +430,36 @@
       
 
       
-        <h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><pre><code>1、HashMap存储数据是根据键值对存储数据的，并且存储多个数据时，数据的键不能相同，如果相同该键之前的值将被覆盖。
-2、HashMap存储数据的位置与添加数据的键的hashcode()返回值有关。
-3、HashMap最多只允许一条存储数据的键为null，可允许多条数据的值为null。
-4、HashMap存储数据的顺序是不确定的，并且可能会因为扩容导致元素存储位置改变。因此遍历顺序是不确定的。
-5、HashMap是线程不安全的，如果在多线程的情况可以用Collections.synchronizedMap(Map map) 方法使 HashMap 具有线程安全的能力，或者使用 ConcurrentHashMap </code></pre><h1 id="2-原理"><a href="#2-原理" class="headerlink" title="2 原理"></a>2 原理</h1><h2 id="2-1-底层数据存储"><a href="#2-1-底层数据存储" class="headerlink" title="2.1 底层数据存储"></a>2.1 底层数据存储</h2><p>JDK1.8后对于HashMap做了底层实现的改动。</p>
-<h3 id="2-1-1-JDK1-7之前的存储结构"><a href="#2-1-1-JDK1-7之前的存储结构" class="headerlink" title="2.1.1 JDK1.7之前的存储结构"></a>2.1.1 JDK1.7之前的存储结构</h3><p>即使hashCode()方法已经写得很完美了，终究还是有可能导致 hash碰撞的，HashMap作为使用hash值来决定元素存储位置的集合也是需要处理hash冲突的。在1.7之前JDK采用 拉链法 来存储数据，即数组和链表结合的方式。<br><img src="/.com//2.2.1.jpg" alt="avatar"></p>
-<p>链地址法：数据加链表的结合。在每个数据元素上存储的都是一个链条。不同的key通过hash运算可能会得到相同的地址，但还是一个数组单位上只能存放一个元素，才使用链地址法，如果遇到相同的hash值的key，可以将它放到作为数组元素的链表上。取元素的时候，通过hash运算的结果找到这个链表，再在链表中找到与key相同的节点，就能找到key相应的值。</p>
-<h3 id="2-1-2-JDK1-8中存储结构"><a href="#2-1-2-JDK1-8中存储结构" class="headerlink" title="2.1.2 JDK1.8中存储结构"></a>2.1.2 JDK1.8中存储结构</h3><p>对于JDK1.8之后的HashMap底层在解决哈希冲突的时候，就不单单是使用数组加上单链表的组合了，因为当处理如果hash值冲突较多的情况下，链表的长度就会越来越来，查找时的时间复杂度达到O(n)，因此在JDK1.8之后，在链表新增节点导致链表长度超过TREEIFY_THRESHOLD = 8 的时候，就会在添加元素的同时，将原来的单链表转化为红黑数。<br><img src="/.com//2.2.2.jpg" alt="avatar"></p>
-<p>红黑树：一种易于增删改查的二叉树，对于数据的查询时间复杂度是O(logn)级别，所以利用红黑树的特点就可以更高效的对HashMap中的元素进行操作。</p>
-<h2 id="2-2-重要概念"><a href="#2-2-重要概念" class="headerlink" title="2.2 重要概念"></a>2.2 重要概念</h2><p>1、哈希桶(buckets)：使用哈希桶来形象的标识数组中每个地址位置。被称为哈希表；<br>2、初始容量(initial capacity)：哈希表汇总哈希桶初始的容量。如果没有通过构造方法修改，这个容量默认是16。为了保证HashMap添加和查找的高效性，HashMap的容量总是2^n的形式。<br>3、加载因子(load factor)：哈希表在其容量自动增加之前被允许获得的最大数量的度量。当哈希表的条目数量超过负载因子和当前容量的乘积时，散列表就会被重新映射(即重建内部数据结构)，重建的散列表容量大约是之前散列表的两倍。默认加载因子(0.75)在时间和空间成本之间提供了良好的折中。加载因子过大会导致很容易链表过长，加载因子很小有容易导致频繁的扩容。<br>4、扩容阈值(threshold)：等于 哈希表容量 * 加载因子。<br>5、树化阈值(TREEIFY_THRESHOLD)：JDK1.8之后加入，代表一个哈希桶中的节点个数大于该值(默认为8)的时候将会被转为红黑树行存储结构。<br>6、非树化阈值(UNTREEIFY_THRESHOLD)：与树化阈值相对应，表示当一个已经转化为树形存储结构的哈希桶中节点数量小于该值(默认为6)的时候将再次改为单链表的格式存储。导致这种操作的原因可能有删除节点或者扩容。<br>7、最小树化容量(MIN_TREEIFY_CAPACITY)：当链表的节点数超过8的时候就会转化为树形存储，其实对于转化还有一个要求：哈希表的数量超过最小树化容量(默认64)，且为了避免进行扩容、树形化选择的冲突，这个不能小于4*TREEIFY_THRESHOLD。在达到该要求之前优先进行扩容。</p>
-<h2 id="2-3-构造方法"><a href="#2-3-构造方法" class="headerlink" title="2.3 构造方法"></a>2.3 构造方法</h2><h3 id="2-3-1-指定容量和构造因子"><a href="#2-3-1-指定容量和构造因子" class="headerlink" title="2.3.1 指定容量和构造因子"></a>2.3.1 指定容量和构造因子</h3><h3 id="2-3-2-指定初始容量的构造函数"><a href="#2-3-2-指定初始容量的构造函数" class="headerlink" title="2.3.2 指定初始容量的构造函数"></a>2.3.2 指定初始容量的构造函数</h3><h3 id="2-3-3-无参构造函数"><a href="#2-3-3-无参构造函数" class="headerlink" title="2.3.3 无参构造函数"></a>2.3.3 无参构造函数</h3><h3 id="2-3-4-传入一个Map集合的构造函数"><a href="#2-3-4-传入一个Map集合的构造函数" class="headerlink" title="2.3.4 传入一个Map集合的构造函数"></a>2.3.4 传入一个Map集合的构造函数</h3><h2 id="2-4-HashMap如何确定添加元素的位置"><a href="#2-4-HashMap如何确定添加元素的位置" class="headerlink" title="2.4 HashMap如何确定添加元素的位置"></a>2.4 HashMap如何确定添加元素的位置</h2><p>在存储元素之前，HashMap 会对 key 的 hashCode 返回值做进一步扰动函数处理。<br>1.7 中扰动函数使用了 4次位运算 + 5次异或运算；<br>1.8 中降低到 1次位运算 + 1次异或运算扰动处理后的 hash 与 哈希表数组length -1 做位与运算得到最终元素储存的哈希桶角标位置。</p>
-<h1 id="3-HashTable的区别"><a href="#3-HashTable的区别" class="headerlink" title="3 HashTable的区别"></a>3 HashTable的区别</h1><p>1、HashMap是线程不安全的，HashTable是线程安全的；<br>2、HashMap允许key和Value是null，但是只允许一个key为null，且这个元素存放在哈希表0角标位置。HashTable不允许key、value是null<br>3、HashMap内部使用hash(Object key)扰动函数对key的hashcode进行扰动后作为hash值。HashTable是直接使用key的hashcode返回值为hash值<br>4、HashMap默认容量为2^4 且容量一定是2^n；HashTable默认容量是11，不一定是2^n 。<br>5、HashMap在扩容的时候是原来的两倍，且哈希桶的下标使用&amp;运算代替了取模；HashTable取哈希桶下标是直接用模运算，扩容时新容量是原来的2倍+1。</p>
+        <h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1 前言"></a>1 前言</h1><pre><code>使用线程池的目的：
+1、线程是稀缺资源，不能频繁的创建；
+2、解耦作用：线程的创建与执行完全分开，方便维护；
+3、应当将线程放入到池子中，可以给其他任务进行复用</code></pre><h1 id="2-原理"><a href="#2-原理" class="headerlink" title="2 原理"></a>2 原理</h1><h2 id="2-1-ThreadPoolExecutor基类"><a href="#2-1-ThreadPoolExecutor基类" class="headerlink" title="2.1 ThreadPoolExecutor基类"></a>2.1 ThreadPoolExecutor基类</h2><h3 id="2-1-1-构造器参数"><a href="#2-1-1-构造器参数" class="headerlink" title="2.1.1 构造器参数"></a>2.1.1 构造器参数</h3><p>1、corePoolSize：核心池的大小，线程池中线程数达到核心池大小就会把新任务放到缓存队列当中<br>2、maximumPoolSize：线程池最大线程数，表示线程池中最多能创建多少个线程<br>3、keepAliveTime：线程没有任务执行时最多保持多久时间会终止，默认线程数大于核心池大小才会起作用。(如果调用了allowCoreThreadTimeOut方法，则线程数不为0时生效)<br>4、unit：参数keepAliveTime的时间单位，TimeUnit.DAYS等<br>5、workQueue：阻塞队列，用来存储等待执行的任务</p>
+<pre><code>有界队列ArrayBlockingQueue：基于数组的先进先出队列，此队列创建时必须指定大小
+无界队列LinkedBlockingQueue：基于链表的先进先出队列，如果创建时没有指定此队列大小，则默认为Integer.MAX_VALUE
+直接提交队列SynchronousQueue：这个队列比较特殊，不会保存提交的任务，而是将直接新建一个线程来执行新来的任务</code></pre><p>6、threadFactory：线程工厂，用来创建线程<br>7、handler：当拒绝处理任务时的策略</p>
+<pre><code>ThreadPoolExecutor.AbortPolicy：丢弃任务并抛出RejectedExecutionException异常
+ThreadPoolExecutor.DiscardPolicy：丢弃任务不抛出异常
+ThreadPoolExecutor.DiscardOldestPolicy：丢弃队列最前面的任务，然后重新尝试执行任务(重复此过程)
+ThreadPoolExecutor.CallerRunsPolicy：由调用线程处理该任务</code></pre><h3 id="2-1-2-重要方法"><a href="#2-1-2-重要方法" class="headerlink" title="2.1.2 重要方法"></a>2.1.2 重要方法</h3><p>execute()：向线程池提交一个任务，交由线程池去执行。<br>submit()：向线程池提交一个任务，能够返回任务执行的结果<br>shutdown()：关闭线程池，等待线程池任务执行完毕<br>shutdownNow()：关闭线程池，并尝试打断正在执行的任务，并且清空任务缓存队列，返回尚未执行的任务</p>
+<h3 id="2-1-3-重要成员变量"><a href="#2-1-3-重要成员变量" class="headerlink" title="2.1.3 重要成员变量"></a>2.1.3 重要成员变量</h3><p>final BlockingQueue<runnable> workQueue：任务缓存队列，用来存放等待执行的任务<br>final ReentrantLock mainLock：线程池的主要状态锁，对线程池状态(线程池的大小、runState等)的改变都要使用这个锁<br>final HashSet<worker> workers：用来存放工作集<br>volatile long  keepAliveTime：线程存活时间<br>volatile boolean allowCoreThreadTimeOut：是否允许为核心线程设置存活时间<br>volatile int   corePoolSize：核心池的大小<br> volatile int   maximumPoolSize：线程池最大能容忍的线程数<br>volatile int   poolSize：线程池中当前的线程数<br>volatile RejectedExecutionHandler handler：任务拒绝策略<br>volatile ThreadFactory threadFactory：线程工厂，用来创建线程<br>int largestPoolSize：用来记录线程池中曾经出现过的最大线程数<br>long completedTaskCount：用来记录已经执行完毕的任务个数</worker></runnable></p>
+<h2 id="2-2-实现原理"><a href="#2-2-实现原理" class="headerlink" title="2.2 实现原理"></a>2.2 实现原理</h2><h3 id="2-2-1-线程池状态：runState-volatile变量用来保证线程之间可见"><a href="#2-2-1-线程池状态：runState-volatile变量用来保证线程之间可见" class="headerlink" title="2.2.1 线程池状态：runState(volatile变量用来保证线程之间可见)"></a>2.2.1 线程池状态：runState(volatile变量用来保证线程之间可见)</h3><pre><code>RUNNIG：创建线程池后的状态
+SHUTDOWN：调用shutdown()方法后的状态，线程池不再接受新的任务，等待任务执行完毕
+STOP：调用shutdownNow()后的状态，线程池不再接受新的任务，并且会去尝试终止正在执行的任务
+TERMINATEC：处于SHUTDOWN或STOP状态，并且所有工作线程已经销毁，任务缓存队列已经清空或执行结束后的状态</code></pre><h3 id="2-2-2-任务的执行"><a href="#2-2-2-任务的执行" class="headerlink" title="2.2.2 任务的执行"></a>2.2.2 任务的执行</h3><pre><code>1、如果线程数目小于核心线程数，则每来一个任务，就创建一个线程去执行这个任务；
+2、如果线程数目大于核心线程数，则每来一个任务，会尝试将其添加到任务缓存队列当中，若添加成功，则该任务会等待空闲线程将其取出执行；若添加失败，则会尝试创建新的线程去执行这个任务
+3、如果线程池中的线程数目达到最大线程数，则会采取任务拒绝策略进行处理
+4、如果线程数量大于corePoolSize，如果某线程空闲时间超过keepAliveTZime，线程会被终止，直到线程数目不大于corePoolSize；如果允许未核心池中的线程设置存活时间，那么核心池中的线程空闲时间超过keepAliveTime，线程也会被终止</code></pre><h3 id="2-2-3-线程池中的线程初始化"><a href="#2-2-3-线程池中的线程初始化" class="headerlink" title="2.2.3 线程池中的线程初始化"></a>2.2.3 线程池中的线程初始化</h3><pre><code>prestartCoreThread()：初始化一个核心线程
+prestartAllCoreThreads()：初始化所有核心线程</code></pre><h2 id="2-3-四种常见的线程池"><a href="#2-3-四种常见的线程池" class="headerlink" title="2.3 四种常见的线程池"></a>2.3 四种常见的线程池</h2><h3 id="2-3-1-固定大小的线程池newFixedThreadPool"><a href="#2-3-1-固定大小的线程池newFixedThreadPool" class="headerlink" title="2.3.1 固定大小的线程池newFixedThreadPool"></a>2.3.1 固定大小的线程池newFixedThreadPool</h3><pre><code>固定大小的线程池，可以指定线程池的大小，corePoolSize和maximumPoolSize相等
+阻塞队列使用无界队列LinkedBlockingQueue，大小为整数的最大值
+当任务提交十分频繁时，LinkedBlockingQueue迅速增大，存在耗尽系统资源的问题
+当线程池空闲时，也不会释放工作线程，还会占用一定的系统资源，需要shutdown()</code></pre><h3 id="2-3-2-单个线程线程池newSingleThreadExecutor"><a href="#2-3-2-单个线程线程池newSingleThreadExecutor" class="headerlink" title="2.3.2 单个线程线程池newSingleThreadExecutor"></a>2.3.2 单个线程线程池newSingleThreadExecutor</h3><pre><code>只有一个线程
+阻塞队列使用无界队列LinkedBlockingQueue，大小为整数的最大值
+有多余的任务提交时，会被暂存到阻塞队列，先进先出顺序执行</code></pre><h3 id="2-3-3-缓存线程池newCachedThreadPool"><a href="#2-3-3-缓存线程池newCachedThreadPool" class="headerlink" title="2.3.3 缓存线程池newCachedThreadPool"></a>2.3.3 缓存线程池newCachedThreadPool</h3><pre><code>缓存的线程默认存活60秒
+核心池corePoolSize大小为0，最大值为Integer.MAX_VALUE。
+阻塞队列使用SynchronousQueue，直接提交的阻塞队列，迫使线程池增加新的线程去执行新的任务，线程没有任务执行且空闲超过keepAliveTime(60秒)时呗回收
+如果同时有大量任务被提交，而且任务执行的时间不是特别快，那么线程池便会新增出等量的线程池处理任务，很可能会很快耗尽系统的资源</code></pre><h3 id="2-3-4-定时线程池newScheduledThreadPool"><a href="#2-3-4-定时线程池newScheduledThreadPool" class="headerlink" title="2.3.4 定时线程池newScheduledThreadPool"></a>2.3.4 定时线程池newScheduledThreadPool</h3><pre><code>可用于周期性去执行任务，通常用于周期性的同步数据
+scheduleAtFixedRate：是以固定的频率去执行任务，周期是指每次执行任务成功执行之间的间隔
+schedlutWithFixedDelay：是以固定的延时去执行任务，延时是指上一次执行成功之后和下一次开始执行的之前的时间</code></pre><h2 id="2-4-合理配置线程池的大小"><a href="#2-4-合理配置线程池的大小" class="headerlink" title="2.4 合理配置线程池的大小"></a>2.4 合理配置线程池的大小</h2><p>如果是CPU密集型任务，就需要尽量压榨CPU，参考值可以设为Ncpu+1<br>如果是IO密集型任务，参考值可以设置为2*Ncpu<br>观察任务运行情况和系统负载、资源利用率来进行适当调整</p>
 
       
     </div>
@@ -477,8 +492,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/14/java-base-arraylist-theory/" rel="next" title="Java基础：ArrayList底层原理">
-                <i class="fa fa-chevron-left"></i> Java基础：ArrayList底层原理
+              <a href="/2019/08/16/java-base-hashmap-theory/" rel="next" title="Java基础：HashMap底层原理">
+                <i class="fa fa-chevron-left"></i> Java基础：HashMap底层原理
               </a>
             
           </div>
@@ -486,10 +501,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/22/java-middle-threadpool/" rel="prev" title="Java中级：线程池基本原理">
-                Java中级：线程池基本原理 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -634,7 +645,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-概述"><span class="nav-number">1.</span> <span class="nav-text">1 概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-原理"><span class="nav-number">2.</span> <span class="nav-text">2 原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-底层数据存储"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 底层数据存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-JDK1-7之前的存储结构"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1 JDK1.7之前的存储结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-JDK1-8中存储结构"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2 JDK1.8中存储结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-重要概念"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 重要概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-构造方法"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 构造方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-指定容量和构造因子"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1 指定容量和构造因子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-指定初始容量的构造函数"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2 指定初始容量的构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-无参构造函数"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.3.3 无参构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-4-传入一个Map集合的构造函数"><span class="nav-number">2.3.4.</span> <span class="nav-text">2.3.4 传入一个Map集合的构造函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-HashMap如何确定添加元素的位置"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 HashMap如何确定添加元素的位置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-HashTable的区别"><span class="nav-number">3.</span> <span class="nav-text">3 HashTable的区别</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-前言"><span class="nav-number">1.</span> <span class="nav-text">1 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-原理"><span class="nav-number">2.</span> <span class="nav-text">2 原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-ThreadPoolExecutor基类"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 ThreadPoolExecutor基类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-构造器参数"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1 构造器参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-重要方法"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2 重要方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-重要成员变量"><span class="nav-number">2.1.3.</span> <span class="nav-text">2.1.3 重要成员变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-实现原理"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-线程池状态：runState-volatile变量用来保证线程之间可见"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1 线程池状态：runState(volatile变量用来保证线程之间可见)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-任务的执行"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2 任务的执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-线程池中的线程初始化"><span class="nav-number">2.2.3.</span> <span class="nav-text">2.2.3 线程池中的线程初始化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-四种常见的线程池"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 四种常见的线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-固定大小的线程池newFixedThreadPool"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1 固定大小的线程池newFixedThreadPool</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-单个线程线程池newSingleThreadExecutor"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2 单个线程线程池newSingleThreadExecutor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-缓存线程池newCachedThreadPool"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.3.3 缓存线程池newCachedThreadPool</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-4-定时线程池newScheduledThreadPool"><span class="nav-number">2.3.4.</span> <span class="nav-text">2.3.4 定时线程池newScheduledThreadPool</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-合理配置线程池的大小"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 合理配置线程池的大小</span></a></li></ol></li></ol></div>
             
 
           </div>
