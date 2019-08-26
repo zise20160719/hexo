@@ -101,7 +101,7 @@
 
 
 
-  <meta name="keywords" content="原理,Java,">
+  <meta name="keywords" content="数据库,事务隔离级别,">
 
 
 
@@ -112,21 +112,18 @@
 
 
 
-<meta name="description" content="本文记录Java基础：HashMap的底层原理实现。">
-<meta name="keywords" content="原理,Java">
+<meta name="description" content="本文记录数据库：MySQL的事务隔离级别">
+<meta name="keywords" content="数据库,事务隔离级别">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java基础：HashMap底层原理">
-<meta property="og:url" content="http://yoursite.com/2019/08/16/java-base-hashmap-theory/index.html">
+<meta property="og:title" content="数据库：MySQL的事务隔离级别">
+<meta property="og:url" content="http://yoursite.com/2019/08/23/database-mysql-transaction-level/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="本文记录Java基础：HashMap的底层原理实现。">
+<meta property="og:description" content="本文记录数据库：MySQL的事务隔离级别">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/.com//2.2.1.jpg">
-<meta property="og:image" content="http://yoursite.com/.com//2.2.2.jpg">
-<meta property="og:updated_time" content="2019-08-22T07:25:42.955Z">
+<meta property="og:updated_time" content="2019-08-26T04:03:48.316Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java基础：HashMap底层原理">
-<meta name="twitter:description" content="本文记录Java基础：HashMap的底层原理实现。">
-<meta name="twitter:image" content="http://yoursite.com/.com//2.2.1.jpg">
+<meta name="twitter:title" content="数据库：MySQL的事务隔离级别">
+<meta name="twitter:description" content="本文记录数据库：MySQL的事务隔离级别">
 
 
 
@@ -156,13 +153,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/08/16/java-base-hashmap-theory/">
+  <link rel="canonical" href="http://yoursite.com/2019/08/23/database-mysql-transaction-level/">
 
 
 
 
 
-  <title>Java基础：HashMap底层原理 | Hexo</title>
+  <title>数据库：MySQL的事务隔离级别 | Hexo</title>
   
 
 
@@ -299,7 +296,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/16/java-base-hashmap-theory/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/23/database-mysql-transaction-level/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ziser">
@@ -316,7 +313,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java基础：HashMap底层原理</h1>
+          <h1 class="post-title" itemprop="name headline">数据库：MySQL的事务隔离级别</h1>
         
 
         <div class="post-meta">
@@ -328,8 +325,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-16T13:16:49+08:00">
-                2019-08-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-23T15:26:58+08:00">
+                2019-08-23
               </time>
             
 
@@ -339,28 +336,6 @@
           </span>
 
           
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java基础/" itemprop="url" rel="index">
-                    <span itemprop="name">Java基础</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
 
           
             
@@ -369,8 +344,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/08/16/java-base-hashmap-theory/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/08/16/java-base-hashmap-theory/" itemprop="commentCount"></span>
+                <a href="/2019/08/23/database-mysql-transaction-level/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/08/23/database-mysql-transaction-level/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -392,7 +367,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.5k
+                  1.2k
                 </span>
               
 
@@ -408,7 +383,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  5
+                  4
                 </span>
               
             </div>
@@ -416,7 +391,7 @@
 
           
               <div class="post-description">
-                  本文记录Java基础：HashMap的底层原理实现。
+                  本文记录数据库：MySQL的事务隔离级别
               </div>
           
 
@@ -433,19 +408,25 @@
       
 
       
-        <h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><pre><code>1、HashMap存储数据是根据键值对存储数据的，并且存储多个数据时，数据的键不能相同，如果相同该键之前的值将被覆盖。
-2、HashMap存储数据的位置与添加数据的键的hashcode()返回值有关。
-3、HashMap最多只允许一条存储数据的键为null，可允许多条数据的值为null。
-4、HashMap存储数据的顺序是不确定的，并且可能会因为扩容导致元素存储位置改变。因此遍历顺序是不确定的。
-5、HashMap是线程不安全的，如果在多线程的情况可以用Collections.synchronizedMap(Map map) 方法使 HashMap 具有线程安全的能力，或者使用 ConcurrentHashMap </code></pre><h1 id="2-原理"><a href="#2-原理" class="headerlink" title="2 原理"></a>2 原理</h1><h2 id="2-1-底层数据存储"><a href="#2-1-底层数据存储" class="headerlink" title="2.1 底层数据存储"></a>2.1 底层数据存储</h2><p>JDK1.8后对于HashMap做了底层实现的改动。</p>
-<h3 id="2-1-1-JDK1-7之前的存储结构"><a href="#2-1-1-JDK1-7之前的存储结构" class="headerlink" title="2.1.1 JDK1.7之前的存储结构"></a>2.1.1 JDK1.7之前的存储结构</h3><p>即使hashCode()方法已经写得很完美了，终究还是有可能导致 hash碰撞的，HashMap作为使用hash值来决定元素存储位置的集合也是需要处理hash冲突的。在1.7之前JDK采用 拉链法 来存储数据，即数组和链表结合的方式。<br><img src="/.com//2.2.1.jpg" alt="avatar"></p>
-<p>链地址法：数据加链表的结合。在每个数据元素上存储的都是一个链条。不同的key通过hash运算可能会得到相同的地址，但还是一个数组单位上只能存放一个元素，才使用链地址法，如果遇到相同的hash值的key，可以将它放到作为数组元素的链表上。取元素的时候，通过hash运算的结果找到这个链表，再在链表中找到与key相同的节点，就能找到key相应的值。</p>
-<h3 id="2-1-2-JDK1-8中存储结构"><a href="#2-1-2-JDK1-8中存储结构" class="headerlink" title="2.1.2 JDK1.8中存储结构"></a>2.1.2 JDK1.8中存储结构</h3><p>对于JDK1.8之后的HashMap底层在解决哈希冲突的时候，就不单单是使用数组加上单链表的组合了，因为当处理如果hash值冲突较多的情况下，链表的长度就会越来越来，查找时的时间复杂度达到O(n)，因此在JDK1.8之后，在链表新增节点导致链表长度超过TREEIFY_THRESHOLD = 8 的时候，就会在添加元素的同时，将原来的单链表转化为红黑数。<br><img src="/.com//2.2.2.jpg" alt="avatar"></p>
-<p>红黑树：一种易于增删改查的二叉树，对于数据的查询时间复杂度是O(logn)级别，所以利用红黑树的特点就可以更高效的对HashMap中的元素进行操作。</p>
-<h2 id="2-2-重要概念"><a href="#2-2-重要概念" class="headerlink" title="2.2 重要概念"></a>2.2 重要概念</h2><p>1、哈希桶(buckets)：使用哈希桶来形象的标识数组中每个地址位置。被称为哈希表；<br>2、初始容量(initial capacity)：哈希表汇总哈希桶初始的容量。如果没有通过构造方法修改，这个容量默认是16。为了保证HashMap添加和查找的高效性，HashMap的容量总是2^n的形式。<br>3、加载因子(load factor)：哈希表在其容量自动增加之前被允许获得的最大数量的度量。当哈希表的条目数量超过负载因子和当前容量的乘积时，散列表就会被重新映射(即重建内部数据结构)，重建的散列表容量大约是之前散列表的两倍。默认加载因子(0.75)在时间和空间成本之间提供了良好的折中。加载因子过大会导致很容易链表过长，加载因子很小有容易导致频繁的扩容。<br>4、扩容阈值(threshold)：等于 哈希表容量 * 加载因子。<br>5、树化阈值(TREEIFY_THRESHOLD)：JDK1.8之后加入，代表一个哈希桶中的节点个数大于该值(默认为8)的时候将会被转为红黑树行存储结构。<br>6、非树化阈值(UNTREEIFY_THRESHOLD)：与树化阈值相对应，表示当一个已经转化为树形存储结构的哈希桶中节点数量小于该值(默认为6)的时候将再次改为单链表的格式存储。导致这种操作的原因可能有删除节点或者扩容。<br>7、最小树化容量(MIN_TREEIFY_CAPACITY)：当链表的节点数超过8的时候就会转化为树形存储，其实对于转化还有一个要求：哈希表的数量超过最小树化容量(默认64)，且为了避免进行扩容、树形化选择的冲突，这个不能小于4*TREEIFY_THRESHOLD。在达到该要求之前优先进行扩容。</p>
-<h2 id="2-3-构造方法"><a href="#2-3-构造方法" class="headerlink" title="2.3 构造方法"></a>2.3 构造方法</h2><h3 id="2-3-1-指定容量和构造因子"><a href="#2-3-1-指定容量和构造因子" class="headerlink" title="2.3.1 指定容量和构造因子"></a>2.3.1 指定容量和构造因子</h3><h3 id="2-3-2-指定初始容量的构造函数"><a href="#2-3-2-指定初始容量的构造函数" class="headerlink" title="2.3.2 指定初始容量的构造函数"></a>2.3.2 指定初始容量的构造函数</h3><h3 id="2-3-3-无参构造函数"><a href="#2-3-3-无参构造函数" class="headerlink" title="2.3.3 无参构造函数"></a>2.3.3 无参构造函数</h3><h3 id="2-3-4-传入一个Map集合的构造函数"><a href="#2-3-4-传入一个Map集合的构造函数" class="headerlink" title="2.3.4 传入一个Map集合的构造函数"></a>2.3.4 传入一个Map集合的构造函数</h3><h2 id="2-4-HashMap如何确定添加元素的位置"><a href="#2-4-HashMap如何确定添加元素的位置" class="headerlink" title="2.4 HashMap如何确定添加元素的位置"></a>2.4 HashMap如何确定添加元素的位置</h2><p>在存储元素之前，HashMap 会对 key 的 hashCode 返回值做进一步扰动函数处理。<br>1.7 中扰动函数使用了 4次位运算 + 5次异或运算；<br>1.8 中降低到 1次位运算 + 1次异或运算扰动处理后的 hash 与 哈希表数组length -1 做位与运算得到最终元素储存的哈希桶角标位置。</p>
-<h1 id="3-HashTable的区别"><a href="#3-HashTable的区别" class="headerlink" title="3 HashTable的区别"></a>3 HashTable的区别</h1><p>1、HashMap是线程不安全的，HashTable是线程安全的；<br>2、HashMap允许key和Value是null，但是只允许一个key为null，且这个元素存放在哈希表0角标位置。HashTable不允许key、value是null<br>3、HashMap内部使用hash(Object key)扰动函数对key的hashcode进行扰动后作为hash值。HashTable是直接使用key的hashcode返回值为hash值<br>4、HashMap默认容量为2^4 且容量一定是2^n；HashTable默认容量是11，不一定是2^n 。<br>5、HashMap在扩容的时候是原来的两倍，且哈希桶的下标使用&amp;运算代替了取模；HashTable取哈希桶下标是直接用模运算，扩容时新容量是原来的2倍+1。</p>
-
+        <h1 id="1-事务"><a href="#1-事务" class="headerlink" title="1 事务"></a>1 事务</h1><p>事务是逻辑上的一组操作，要么都执行，要么都不执行。</p>
+<h2 id="1-1-事务的特性"><a href="#1-1-事务的特性" class="headerlink" title="1.1 事务的特性"></a>1.1 事务的特性</h2><h3 id="1-原子性"><a href="#1-原子性" class="headerlink" title="1 原子性"></a>1 原子性</h3><p>事务是最小的执行单位，不允许分割。事务的原子性确保动作要么全部完成，要么完全不起作用；</p>
+<h3 id="2-一致性"><a href="#2-一致性" class="headerlink" title="2 一致性"></a>2 一致性</h3><p>执行事务前后，数据保持一致，多个事务对同一个数据读取的结果是相同的；</p>
+<h3 id="3-隔离性"><a href="#3-隔离性" class="headerlink" title="3 隔离性"></a>3 隔离性</h3><p>并发访问数据库时，一个用户的事务不被其他事务所干扰，各并发事务之间，数据库是独立的；</p>
+<h3 id="4-持久性"><a href="#4-持久性" class="headerlink" title="4 持久性"></a>4 持久性</h3><p>一个事务被提交之后，它对数据库中数据的改变是持久的，即时数据库发生故障也不应该对其有任何影响。</p>
+<h2 id="1-2-并发事务带来的问题"><a href="#1-2-并发事务带来的问题" class="headerlink" title="1.2 并发事务带来的问题"></a>1.2 并发事务带来的问题</h2><p>在典型的应用程序中，多个事务并发运行，经常会操作相同的数据来完成各自的任务(多个用户对同一数据进行操作)。并发可能会导致以下问题。</p>
+<h3 id="1-脏读-Dirty-Read"><a href="#1-脏读-Dirty-Read" class="headerlink" title="1 脏读(Dirty Read)"></a>1 脏读(Dirty Read)</h3><p>当一个事务正在访问数据，并且对数据进行了修改，而这种修改还没提交都数据库中，这是另外一个事务也访问了这个数据，然后使用了这个数据。因为这个数据还没有提交，那么另外一个事务读到这个数据就是脏数据，依据脏数据所做的操作可能是不正确的。</p>
+<h3 id="2-丢失修改-Lost-to-modify"><a href="#2-丢失修改-Lost-to-modify" class="headerlink" title="2 丢失修改(Lost to  modify)"></a>2 丢失修改(Lost to  modify)</h3><p>指在一个事务读取一个数据时，另外一个事务也访问了该数据，那么在第一个事务中修改了这个数据后，第二个事务也修改了这个数据。这样第一个事务内的修改结果就被丢失，因此称为丢失修改。</p>
+<h3 id="3-不可重复读-Unrepeatableread"><a href="#3-不可重复读-Unrepeatableread" class="headerlink" title="3 不可重复读(Unrepeatableread)"></a>3 不可重复读(Unrepeatableread)</h3><p>指在一个事务内多次读取同一数据。在这个事务还没结束时，另一个事务也访问该数据。那么，在第一个事务中的两次数据之间，由于第二个事务的修改导致第一个事务两次读取的数据可能也不太一样。这就发生了在一个事务内两次读到的数据是不一样的情况，因此称为不可重复读。</p>
+<h3 id="4-幻读-Phantom-Read"><a href="#4-幻读-Phantom-Read" class="headerlink" title="4 幻读(Phantom Read)"></a>4 幻读(Phantom Read)</h3><p>幻读与不可重复读类似。它发生在一个事务(T1)读取了几行数据，接着另一个并发事务(T2)插入了一些数据。在随后的查询中，第一个事务(T1)就会发现多了一些原本不存在的记录，就好像发生了幻觉一样，所以称为幻读。</p>
+<h2 id="1-3-事务隔离级别"><a href="#1-3-事务隔离级别" class="headerlink" title="1.3 事务隔离级别"></a>1.3 事务隔离级别</h2><p>SQL标准定义了四个隔离级别</p>
+<h3 id="READ-UNCOMMITTED-读取未提交"><a href="#READ-UNCOMMITTED-读取未提交" class="headerlink" title="READ-UNCOMMITTED(读取未提交)"></a>READ-UNCOMMITTED(读取未提交)</h3><p>最低的隔离级别，允许读取尚未提交的数据变更，可能会导致脏读、幻读或不可重复读。</p>
+<h3 id="READ-COMMITTED-读取已提交"><a href="#READ-COMMITTED-读取已提交" class="headerlink" title="READ-COMMITTED(读取已提交)"></a>READ-COMMITTED(读取已提交)</h3><p>允许读取并发事务已经提交的数据，可以阻止脏读，但是幻读或不可重复读仍有可能发生。</p>
+<h3 id="REPEATABLE-READ-可重复读"><a href="#REPEATABLE-READ-可重复读" class="headerlink" title="REPEATABLE-READ(可重复读)"></a>REPEATABLE-READ(可重复读)</h3><p>对同一字段的多次读取结果都是一致的，除非数据是被本身事务所修改，可以阻止脏读和不可重复读，但幻读仍有可能发生</p>
+<h3 id="SERIALIZABLE-可串行化"><a href="#SERIALIZABLE-可串行化" class="headerlink" title="SERIALIZABLE(可串行化)"></a>SERIALIZABLE(可串行化)</h3><p>最高的隔离级别，完全服从ACID的隔离级别。所有的事务依次逐个执行，这样事务之间就完全不能产生干扰，也就是说该级别可以防止脏读、不可重复读以及幻读</p>
+<h2 id="1-4-MySQL-InnoDB使用的事务隔离级别"><a href="#1-4-MySQL-InnoDB使用的事务隔离级别" class="headerlink" title="1.4 MySQL InnoDB使用的事务隔离级别"></a>1.4 MySQL InnoDB使用的事务隔离级别</h2><p>MySQL InnoDB存储引擎的默认支持隔离级别是REPEATABLE-READ(可重复读)。可以通过 SELECT @@tx_isolation;命令查看。</p>
+<p>这里需要注意的是：与 SQL 标准不同的地方在于InnoDB 存储引擎在 REPEATABLE-READ（可重读）事务隔离级别下使用的是Next-Key Lock 锁算法，因此可以避免幻读的产生，这与其他数据库系统(如 SQL Server)是不同的。所以说InnoDB 存储引擎的默认支持的隔离级别是 REPEATABLE-READ（可重读） 已经可以完全保证事务的隔离性要求，即达到了 SQL标准的SERIALIZABLE(可串行化)隔离级别。</p>
+<p>因为隔离级别越低，事务请求的锁越少，所以大部分数据库系统的隔离级别都是READ-COMMITTED(读取提交内容):，但是你要知道的是InnoDB 存储引擎默认使用 REPEATABLE-READ（可重读）并不会有任何性能损失。<br>InnoDB 存储引擎在 分布式事务 的情况下一般会用到SERIALIZABLE(可串行化)隔离级别。</p>
+<h1 id="2-参考"><a href="#2-参考" class="headerlink" title="2 参考"></a>2 参考</h1><pre><code>https://www.jianshu.com/p/971a3998e3e9</code></pre>
       
     </div>
     
@@ -462,9 +443,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/原理/" rel="tag"># 原理</a>
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
           
-            <a href="/tags/Java/" rel="tag"># Java</a>
+            <a href="/tags/事务隔离级别/" rel="tag"># 事务隔离级别</a>
           
         </div>
       
@@ -477,8 +458,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/14/java-base-arraylist-theory/" rel="next" title="Java基础：ArrayList底层原理">
-                <i class="fa fa-chevron-left"></i> Java基础：ArrayList底层原理
+              <a href="/2019/08/23/java-base-aop-ioc-theory/" rel="next" title="Java基础：AOP和IOC的底层原理">
+                <i class="fa fa-chevron-left"></i> Java基础：AOP和IOC的底层原理
               </a>
             
           </div>
@@ -486,10 +467,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/22/java-middle-threadpool/" rel="prev" title="Java中级：线程池基本原理">
-                Java中级：线程池基本原理 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -634,7 +611,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-概述"><span class="nav-number">1.</span> <span class="nav-text">1 概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-原理"><span class="nav-number">2.</span> <span class="nav-text">2 原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-底层数据存储"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 底层数据存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-JDK1-7之前的存储结构"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1 JDK1.7之前的存储结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-JDK1-8中存储结构"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2 JDK1.8中存储结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-重要概念"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 重要概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-构造方法"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 构造方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-指定容量和构造因子"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1 指定容量和构造因子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-指定初始容量的构造函数"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2 指定初始容量的构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-无参构造函数"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.3.3 无参构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-4-传入一个Map集合的构造函数"><span class="nav-number">2.3.4.</span> <span class="nav-text">2.3.4 传入一个Map集合的构造函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-HashMap如何确定添加元素的位置"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 HashMap如何确定添加元素的位置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-HashTable的区别"><span class="nav-number">3.</span> <span class="nav-text">3 HashTable的区别</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-事务"><span class="nav-number">1.</span> <span class="nav-text">1 事务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-事务的特性"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 事务的特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-原子性"><span class="nav-number">1.1.1.</span> <span class="nav-text">1 原子性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-一致性"><span class="nav-number">1.1.2.</span> <span class="nav-text">2 一致性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-隔离性"><span class="nav-number">1.1.3.</span> <span class="nav-text">3 隔离性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-持久性"><span class="nav-number">1.1.4.</span> <span class="nav-text">4 持久性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-并发事务带来的问题"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 并发事务带来的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-脏读-Dirty-Read"><span class="nav-number">1.2.1.</span> <span class="nav-text">1 脏读(Dirty Read)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-丢失修改-Lost-to-modify"><span class="nav-number">1.2.2.</span> <span class="nav-text">2 丢失修改(Lost to  modify)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-不可重复读-Unrepeatableread"><span class="nav-number">1.2.3.</span> <span class="nav-text">3 不可重复读(Unrepeatableread)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-幻读-Phantom-Read"><span class="nav-number">1.2.4.</span> <span class="nav-text">4 幻读(Phantom Read)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-事务隔离级别"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 事务隔离级别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#READ-UNCOMMITTED-读取未提交"><span class="nav-number">1.3.1.</span> <span class="nav-text">READ-UNCOMMITTED(读取未提交)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#READ-COMMITTED-读取已提交"><span class="nav-number">1.3.2.</span> <span class="nav-text">READ-COMMITTED(读取已提交)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#REPEATABLE-READ-可重复读"><span class="nav-number">1.3.3.</span> <span class="nav-text">REPEATABLE-READ(可重复读)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SERIALIZABLE-可串行化"><span class="nav-number">1.3.4.</span> <span class="nav-text">SERIALIZABLE(可串行化)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-MySQL-InnoDB使用的事务隔离级别"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 MySQL InnoDB使用的事务隔离级别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-参考"><span class="nav-number">2.</span> <span class="nav-text">2 参考</span></a></li></ol></div>
             
 
           </div>
