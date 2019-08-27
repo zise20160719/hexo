@@ -101,7 +101,7 @@
 
 
 
-  <meta name="keywords" content="原理,Java,">
+  <meta name="keywords" content="数据库,索引,">
 
 
 
@@ -112,18 +112,18 @@
 
 
 
-<meta name="description" content="本文记录Java基础：AOP和IOC的底层原理。">
-<meta name="keywords" content="原理,Java">
+<meta name="description" content="本文记录数据库：MySQL索引。">
+<meta name="keywords" content="数据库,索引">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java基础：AOP和IOC的底层原理">
-<meta property="og:url" content="http://yoursite.com/2019/08/23/java-base-aop-ioc-theory/index.html">
+<meta property="og:title" content="数据库：MySQL索引">
+<meta property="og:url" content="http://yoursite.com/2019/08/27/database-mysql-index/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="本文记录Java基础：AOP和IOC的底层原理。">
+<meta property="og:description" content="本文记录数据库：MySQL索引。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-23T03:42:34.671Z">
+<meta property="og:updated_time" content="2019-08-27T09:15:52.065Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java基础：AOP和IOC的底层原理">
-<meta name="twitter:description" content="本文记录Java基础：AOP和IOC的底层原理。">
+<meta name="twitter:title" content="数据库：MySQL索引">
+<meta name="twitter:description" content="本文记录数据库：MySQL索引。">
 
 
 
@@ -153,13 +153,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/08/23/java-base-aop-ioc-theory/">
+  <link rel="canonical" href="http://yoursite.com/2019/08/27/database-mysql-index/">
 
 
 
 
 
-  <title>Java基础：AOP和IOC的底层原理 | Hexo</title>
+  <title>数据库：MySQL索引 | Hexo</title>
   
 
 
@@ -296,7 +296,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/23/java-base-aop-ioc-theory/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/27/database-mysql-index/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ziser">
@@ -313,7 +313,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java基础：AOP和IOC的底层原理</h1>
+          <h1 class="post-title" itemprop="name headline">数据库：MySQL索引</h1>
         
 
         <div class="post-meta">
@@ -325,8 +325,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-23T10:53:30+08:00">
-                2019-08-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-27T16:01:38+08:00">
+                2019-08-27
               </time>
             
 
@@ -336,6 +336,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -344,8 +366,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/08/23/java-base-aop-ioc-theory/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/08/23/java-base-aop-ioc-theory/" itemprop="commentCount"></span>
+                <a href="/2019/08/27/database-mysql-index/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/08/27/database-mysql-index/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -367,7 +389,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  408
+                  1.1k
                 </span>
               
 
@@ -383,7 +405,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  3
                 </span>
               
             </div>
@@ -391,7 +413,7 @@
 
           
               <div class="post-description">
-                  本文记录Java基础：AOP和IOC的底层原理。
+                  本文记录数据库：MySQL索引。
               </div>
           
 
@@ -408,9 +430,39 @@
       
 
       
-        <h1 id="1-IOC：Inversion-of-Control，指容器控制程序对象之间的关系。"><a href="#1-IOC：Inversion-of-Control，指容器控制程序对象之间的关系。" class="headerlink" title="1 IOC：Inversion of Control，指容器控制程序对象之间的关系。"></a>1 IOC：Inversion of Control，指容器控制程序对象之间的关系。</h1><p>1、控制反转：原来由程序本身去控制对象之间的依赖关系的格局被反转了，通过第三方容器(IOC)去完成这些对象的依赖关系并对他们进行集中管理。<br>2、依赖注入：获得依赖对象的过程由自身管理变为了有IOC容器自动注入，就是有IOC容器在运行期间，动态的将某种依赖关系注入对象之中。</p>
-<h1 id="2-AOP：Aspect-oriented-Programming，面向切面编程"><a href="#2-AOP：Aspect-oriented-Programming，面向切面编程" class="headerlink" title="2 AOP：Aspect oriented Programming，面向切面编程"></a>2 AOP：Aspect oriented Programming，面向切面编程</h1><p>1、AOP基于IOC，是对OOP的有益补充；<br>2、将业务模块所共同调用的逻辑或责任封装起来，比如日志记录，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可操作性和可维护性。<br>3、实现原理：一、采用动态代理技术，利用截取消息的方式，对该消息进行装饰，以取代原有对象行为的执行；二、采用静态植入的方式，引入特定的语法创建切面，从而使得编译器可以再编译期间植入有关切面的代码。<br>4、使用场景：<br>    Authentication 权限检查<br>    Caching 缓存<br>    Context passing 内容传递<br>    Error handling  错误处理<br>    Lazy loading    延迟加载<br>    Debugging   调试<br>    logging，tracing，profiling and monitoring    日志记录，跟踪，优化，校准<br>    Persistence 持久化<br>    Resource pooling    资源池<br>    Synchronization 同步<br>    Transactions    事务处理<br>    另外Filter的实现和struts2的拦截器的实现都是AOP思想的提现。</p>
-<h1 id="3-参考"><a href="#3-参考" class="headerlink" title="3 参考"></a>3 参考</h1><pre><code>https://www.cnblogs.com/cyhzzu/p/6644981.html</code></pre>
+        <h1 id="1-为什么需要索引"><a href="#1-为什么需要索引" class="headerlink" title="1 为什么需要索引"></a>1 为什么需要索引</h1><p>总体来说，索引是为了提高查询速度的，当数据量比较大时，从头到尾依次检索是无法接受的。</p>
+<blockquote>
+<p>数据是存储在磁盘上，操作系统读取磁盘的最小单位是块<br>1、如果没有索引，会加载所有的数据到内存，依次进行检索，加载的总数据会很多，磁盘IO多。<br>2、如果有了索引，MySQL采用B+树结构存储。一方面加载的数据只有索引列和主键ID，另一方面采用了多叉平衡树，定位到指定记录很快。</p>
+</blockquote>
+<h1 id="2-索引的类别"><a href="#2-索引的类别" class="headerlink" title="2 索引的类别"></a>2 索引的类别</h1><h2 id="2-1-聚簇索引与非聚簇索引"><a href="#2-1-聚簇索引与非聚簇索引" class="headerlink" title="2.1 聚簇索引与非聚簇索引"></a>2.1 聚簇索引与非聚簇索引</h2><blockquote>
+<p>1、聚簇索引是一种索引组织形式，索引的键值逻辑顺序决定了表数据行的物理存储顺序；<br>2、非聚簇索引就是普通索引，仅仅只是对数据列创建相应的索引，不影响整个表的物理存储顺序</p>
+</blockquote>
+<p>聚簇索引的优点</p>
+<blockquote>
+<p>1、范围查询效率更高<br>2、特别适合有小部分热点数据频繁读写的场景<br>3、通过主键访问数据时快速可达</p>
+</blockquote>
+<p>InnoDb引擎是聚集索引组织表，它的聚集索引选择规则：</p>
+<blockquote>
+<p>1、首先选择显式定义的主键索引作为聚集索引<br>2、如果没有，则选择第一个不允许NULL的唯一索引<br>3、还是没有的话，就采用InnoDB引擎内置的RowId作为聚集索引</p>
+</blockquote>
+<h2 id="2-2-主键索引和辅助索引"><a href="#2-2-主键索引和辅助索引" class="headerlink" title="2.2 主键索引和辅助索引"></a>2.2 主键索引和辅助索引</h2><p>主键索引，简称主键，由一个或多个列组成，用于唯一性标识数据表中某一条记录。</p>
+<p>InnoDB数据表的主键设计通常遵循几个原则：</p>
+<blockquote>
+<p>1、采用一个没有业务用途的自增属性列作为主键<br>2、主键字段值总是不更新，只有新增或者删除两种操作<br>3、不选择会动态更新的类型，比如当前时间戳等</p>
+</blockquote>
+<p>辅助索引，常规所指的索引，也叫二级索引，又分为唯一索引和非唯一索引。InnoDB引擎汇总，主键索引会被选中作为聚集索引，而唯一索引和普通辅助索引减除了唯一性约束外，在存储上没本质区别。</p>
+<h1 id="3-MySQL索引演化"><a href="#3-MySQL索引演化" class="headerlink" title="3 MySQL索引演化"></a>3 MySQL索引演化</h1><p>介绍索引是如何根据需求一步步演变最终成为B+树结构，基本思路是减少访问数据的总量，相应的减少磁盘IO。</p>
+<blockquote>
+<p>每次进行定位操作时，都从根开始查找<br>每层索引只需要读出一个块<br>最底层的密集索引或数据成为叶子<br>每次查找都必须要搜索到叶子节点，才能定位到数据<br>索引的层数称作索引树的高度<br>索引的IO性能和索引树的高度密切相关，索引树越高，磁盘IO越多<br>进行范围查找时，效率很高</p>
+</blockquote>
+<h1 id="4-MySQL索引优化"><a href="#4-MySQL索引优化" class="headerlink" title="4 MySQL索引优化"></a>4 MySQL索引优化</h1><h2 id="4-1-SQL的执行顺序"><a href="#4-1-SQL的执行顺序" class="headerlink" title="4.1 SQL的执行顺序"></a>4.1 SQL的执行顺序</h2><p>FROM–&gt;WHERE–&gt;GROUP BY–&gt;HAVING–&gt;SELECT–&gt;ORDER BY–&gt;LIMIT</p>
+<h2 id="4-2-常见优化方法"><a href="#4-2-常见优化方法" class="headerlink" title="4.2 常见优化方法"></a>4.2 常见优化方法</h2><blockquote>
+<p>1、联合索引最左前缀原则：比如(a,b,c)三个字段上建立联合索引，那么它能够加快(a),(a,b),(a,b,c)三组查询的速度，而不能加快(b),(b,a)的查询顺序。<br>2、不要在列上使用函数和进行运算，否则会导致全表扫描<br>3、负向条件查询不能使用索引(含：!=,&lt;&gt;,not in,not exists,not like等，可以用in进行优化)<br>4、使用覆盖索引：被查询的列，只从索引上取数据<br>5、避免强制类型转换：当查询条件左右两侧类型不匹配的时候会发生强制转换，可能导致索引失效。<br>6、范围列可以用到索引(含：&lt;,&lt;=,&gt;,&gt;=,between等，最多用于一个范围列)<br>7、更新频繁、数据区分度不高(80%以上)的字段不宜建立索引<br>8、索引列不允许为null：单列索引不存在null值，复合索引不存在全null的值<br>9、避免使用or来连接条件<br>10、模糊查询：前导模糊查询不能使用索引，非前导查询可以</p>
+</blockquote>
+<h1 id="5-参考"><a href="#5-参考" class="headerlink" title="5 参考"></a>5 参考</h1><blockquote>
+<p><a href="https://www.jianshu.com/p/ff419ed62a16" target="_blank" rel="noopener">https://www.jianshu.com/p/ff419ed62a16</a><br><a href="https://www.jianshu.com/p/df2095290f2e" target="_blank" rel="noopener">https://www.jianshu.com/p/df2095290f2e</a></p>
+</blockquote>
+
       
     </div>
     
@@ -427,9 +479,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/原理/" rel="tag"># 原理</a>
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
           
-            <a href="/tags/Java/" rel="tag"># Java</a>
+            <a href="/tags/索引/" rel="tag"># 索引</a>
           
         </div>
       
@@ -442,8 +494,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/22/java-middle-threadpool/" rel="next" title="Java中级：线程池基本原理">
-                <i class="fa fa-chevron-left"></i> Java中级：线程池基本原理
+              <a href="/2019/08/27/database-mysql-transaction-diffuse/" rel="next" title="数据库：MySQL的事务传播特性">
+                <i class="fa fa-chevron-left"></i> 数据库：MySQL的事务传播特性
               </a>
             
           </div>
@@ -451,10 +503,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/23/database-mysql-transaction-level/" rel="prev" title="数据库：MySQL的事务隔离级别">
-                数据库：MySQL的事务隔离级别 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -599,7 +647,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-IOC：Inversion-of-Control，指容器控制程序对象之间的关系。"><span class="nav-number">1.</span> <span class="nav-text">1 IOC：Inversion of Control，指容器控制程序对象之间的关系。</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-AOP：Aspect-oriented-Programming，面向切面编程"><span class="nav-number">2.</span> <span class="nav-text">2 AOP：Aspect oriented Programming，面向切面编程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-参考"><span class="nav-number">3.</span> <span class="nav-text">3 参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-为什么需要索引"><span class="nav-number">1.</span> <span class="nav-text">1 为什么需要索引</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-索引的类别"><span class="nav-number">2.</span> <span class="nav-text">2 索引的类别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-聚簇索引与非聚簇索引"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 聚簇索引与非聚簇索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-主键索引和辅助索引"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 主键索引和辅助索引</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-MySQL索引演化"><span class="nav-number">3.</span> <span class="nav-text">3 MySQL索引演化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-MySQL索引优化"><span class="nav-number">4.</span> <span class="nav-text">4 MySQL索引优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-SQL的执行顺序"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 SQL的执行顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-常见优化方法"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 常见优化方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-参考"><span class="nav-number">5.</span> <span class="nav-text">5 参考</span></a></li></ol></div>
             
 
           </div>
