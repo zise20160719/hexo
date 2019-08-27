@@ -101,7 +101,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="数据库,事务传播特性,">
 
 
 
@@ -112,13 +112,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/tags/原理/index.html">
+<meta name="description" content="本文记录数据库：MySQL的事务传播特性">
+<meta name="keywords" content="数据库,事务传播特性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库：MySQL的事务传播特性">
+<meta property="og:url" content="http://yoursite.com/2019/08/27/database-mysql-transaction-diffuse/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文记录数据库：MySQL的事务传播特性">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-08-27T07:50:55.113Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="数据库：MySQL的事务传播特性">
+<meta name="twitter:description" content="本文记录数据库：MySQL的事务传播特性">
 
 
 
@@ -148,13 +153,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/原理/">
+  <link rel="canonical" href="http://yoursite.com/2019/08/27/database-mysql-transaction-diffuse/">
 
 
 
 
 
-  <title>标签: 原理 | Hexo</title>
+  <title>数据库：MySQL的事务传播特性 | Hexo</title>
   
 
 
@@ -173,7 +178,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -277,130 +282,236 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block tag">
-
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>原理<small>标签</small>
-        </h1>
-      </div>
-
-      
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/27/database-mysql-transaction-diffuse/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ziser">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2019/08/23/java-base-aop-ioc-theory/" itemprop="url">
-              
-                <span itemprop="name">Java基础：AOP和IOC的底层原理</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">数据库：MySQL的事务传播特性</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-08-23T10:53:30+08:00" content="2019-08-23">
-          08-23
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-27T15:45:18+08:00">
+                2019-08-27
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/08/27/database-mysql-transaction-diffuse/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/08/27/database-mysql-transaction-diffuse/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  149
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  1
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  本文记录数据库：MySQL的事务传播特性
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/08/22/java-middle-threadpool/" itemprop="url">
-              
-                <span itemprop="name">Java中级：线程池基本原理</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-08-22T15:37:32+08:00" content="2019-08-22">
-          08-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/08/16/java-base-hashmap-theory/" itemprop="url">
-              
-                <span itemprop="name">Java基础：HashMap底层原理</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-08-16T13:16:49+08:00" content="2019-08-16">
-          08-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/08/14/java-base-arraylist-theory/" itemprop="url">
-              
-                <span itemprop="name">Java基础：ArrayList底层原理</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-08-14T11:56:37+08:00" content="2019-08-14">
-          08-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+        <blockquote>
+<p>@Transactional(propagation=Propagation.REQUIRED) 如果没有事务创建新事务, 如果当前有事务参与当前事务</p>
+</blockquote>
+<blockquote>
+<p>@Transactional(propagation=Propagation.REQUIRES_NEW)<br>必须是新事务, 如果有当前事务, 挂起当前事务并且开启新事务.</p>
+</blockquote>
+<blockquote>
+<p>@Transactional(propagation=Propagation.MANDATORY)必须有事务, 如果当前没有事务就抛异常</p>
+</blockquote>
+<blockquote>
+<p>@Transactional(propagation=Propagation.NEVER)绝对不能有事务, 如果在事务中调用则抛出异常</p>
+</blockquote>
+<blockquote>
+<p>@Transactional(propagation=Propagation.NESTED)必须被嵌套到其他事务中</p>
+</blockquote>
+<blockquote>
+<p>@Transactional(propagation=Propagation.NOT_SUPPORTED)不支持事务</p>
+</blockquote>
+<blockquote>
+<p>@Transactional(propagation=Propagation.SUPPORTS)支持事务, 如果没有事务也不会创建新事务</p>
+</blockquote>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
+          
+            <a href="/tags/事务传播特性/" rel="tag"># 事务传播特性</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/26/database-redis-theory/" rel="next" title="数据库：Redis简介">
+                <i class="fa fa-chevron-left"></i> 数据库：Redis简介
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -408,6 +519,23 @@
 
 
           
+  <div class="comments" id="comments"></div>
+    
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/valine@1.1.6/dist/Valine.min.js"></script>
+    <script>
+        new Valine({
+            av: AV,
+            el: '.comments',
+            notify: true, // �ʼ����� v1.1.4��������һ�����о������������
+            verify: true,
+            app_id: '',
+            app_key: '',
+            placeholder: '�d?�R?�Q)o��������!'
+        });
+    </script>
+    
+
 
         </div>
         
@@ -652,6 +780,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
